@@ -2,6 +2,7 @@ import React from "react";
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import Login from "./pages/Login-Register/Login";
 import Register from "./pages/Login-Register/Register";
+import Profile from "./pages/Profile/Profile";
 
 function App(): React.JSX.Element {
   return (
@@ -10,6 +11,7 @@ function App(): React.JSX.Element {
         {/* Login - Pantalla completa sin header */}
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/profile" element={<Profile />} />
 
         {/* Otras rutas con header y layout */}
         <Route
@@ -35,6 +37,9 @@ function App(): React.JSX.Element {
                       </Link>
                       <Link to="/register" className="text-gray-600 hover:text-gray-900">
                         Register
+                      </Link>
+                      <Link to="/profile" className="text-gray-600 hover:text-gray-900">
+                        Profile
                       </Link>
                     </nav>
                   </div>
