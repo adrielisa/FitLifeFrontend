@@ -1,6 +1,18 @@
 # FitLife Frontend
 
-Una aplicación web de fitness y nutrición construida con React, Vite y Tailwind CSS.
+Una aplicación web de fitness y nutrición construida con React, TypeScript, Vite y Tailwind CSS.
+
+## Comandos básicos git
+
+Traer los cambios de la rama principal: 
+
+* git pull origin main
+
+Hacer un pull request de tu rama a main:
+
+* git add .
+* git commit -m "Nombre de los cambios"
+* git push origin Bruno
 
 ## 🚀 Comenzando
 
@@ -37,8 +49,10 @@ La aplicación estará disponible en `http://localhost:3001`
 ### Scripts Disponibles
 
 - `npm run dev` - Inicia el servidor de desarrollo
-- `npm run build` - Construye la aplicación para producción
+- `npm run build` - Construye la aplicación para producción (incluye verificación de tipos)
 - `npm run preview` - Previsualiza la construcción de producción localmente
+- `npm run type-check` - Verifica los tipos de TypeScript sin compilar
+- `npm run lint` - Ejecuta verificación de tipos y linting
 
 ## 📁 Estructura del Proyecto
 
@@ -80,9 +94,10 @@ src/
 ## 🛠 Stack Tecnológico
 
 - **React 19** - Librería de interfaz de usuario
+- **TypeScript** - Superset tipado de JavaScript
 - **Vite** - Herramienta de construcción y servidor de desarrollo
 - **Tailwind CSS** - Framework CSS utility-first
-- **JavaScript** - Lenguaje de programación
+- **Lucide React** - Librería de íconos SVG para React
 
 ## 🌟 Características
 
@@ -97,8 +112,39 @@ src/
 ### Agregando Nuevos Componentes
 
 1. Crea una nueva carpeta en la categoría apropiada (`common`, `exercises`, o `nutrition`)
-2. Agrega tu archivo de componente (ej., `ComponentName.jsx`)
-3. Exporta el componente desde el archivo
+2. Agrega tu archivo de componente (ej., `ComponentName.tsx`)
+3. Define los tipos TypeScript para las props del componente
+4. Exporta el componente desde el archivo
+
+Ejemplo de componente TypeScript:
+
+```tsx
+import React from 'react'
+
+interface ButtonProps {
+  children: React.ReactNode
+  onClick: () => void
+  variant?: 'primary' | 'secondary'
+  disabled?: boolean
+}
+
+export const Button: React.FC<ButtonProps> = ({ 
+  children, 
+  onClick, 
+  variant = 'primary', 
+  disabled = false 
+}) => {
+  return (
+    <button
+      onClick={onClick}
+      disabled={disabled}
+      className={`px-4 py-2 rounded ${variant === 'primary' ? 'bg-blue-500 text-white' : 'bg-gray-200'}`}
+    >
+      {children}
+    </button>
+  )
+}
+```
 
 ### Estilos
 
@@ -108,6 +154,81 @@ Este proyecto usa Tailwind CSS para los estilos. Agrega clases directamente a tu
 <div className="bg-white p-6 rounded-lg shadow">
   <h3 className="text-xl font-semibold text-gray-900 mb-2">Título</h3>
 </div>
+```
+
+### Íconos
+
+El proyecto utiliza **Lucide React** para los íconos. Hay dos enfoques recomendados:
+
+#### Opción 1: Importación directa (recomendado para pocos íconos)
+
+```tsx
+import { Heart, User, Settings } from 'lucide-react'
+
+export const Header = () => {
+  return (
+    <header className="flex items-center gap-4">
+      <Heart className="w-6 h-6 text-red-500" />
+      <User className="w-6 h-6 text-blue-500" />
+      <Settings className="w-6 h-6 text-gray-500" />
+    </header>
+  )
+}
+```
+
+#### Opción 2: Archivo centralizado de íconos (recomendado para muchos íconos)
+
+Crea un archivo `src/components/common/Icon/index.ts`:
+
+```tsx
+export { 
+  Heart,
+  User, 
+  Settings,
+  Home,
+  Dumbbell,
+  Apple,
+  Calendar,
+  TrendingUp,
+  Plus,
+  Minus,
+  Edit,
+  Trash2,
+  Save,
+  X
+} from 'lucide-react'
+```
+
+Luego úsalos en tus componentes:
+
+```tsx
+import { Heart, User, Settings } from '@/components/common/Icon'
+
+export const Header = () => {
+  return (
+    <header className="flex items-center gap-4">
+      <Heart className="w-6 h-6 text-red-500" />
+      <User className="w-6 h-6 text-blue-500" />
+      <Settings className="w-6 h-6 text-gray-500" />
+    </header>
+  )
+}
+```
+
+**Propiedades comunes de los íconos:**
+
+- `size`: Tamaño del ícono (número o string)
+- `color`: Color del ícono
+- `strokeWidth`: Grosor del trazo
+- `className`: Clases de Tailwind CSS
+
+```tsx
+<Heart 
+  size={24} 
+  color="red" 
+  strokeWidth={2}
+  className="hover:scale-110 transition-transform" 
+/>
 ```
 
 ### Integración con API
