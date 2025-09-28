@@ -2,6 +2,18 @@
 
 Una aplicación web de fitness y nutrición construida con React, TypeScript, Vite y Tailwind CSS.
 
+## Comandos básicos git
+
+Traer los cambios de la rama principal: 
+
+* git pull origin main
+
+Hacer un pull request de tu rama a main:
+
+* git add .
+* git commit -m "Nombre de los cambios"
+* git push origin Bruno
+
 ## 🚀 Comenzando
 
 ### Prerrequisitos
@@ -149,6 +161,7 @@ Este proyecto usa Tailwind CSS para los estilos. Agrega clases directamente a tu
 El proyecto utiliza **Lucide React** para los íconos. Hay dos enfoques recomendados:
 
 #### Opción 1: Importación directa (recomendado para pocos íconos)
+
 ```tsx
 import { Heart, User, Settings } from 'lucide-react'
 
@@ -164,6 +177,7 @@ export const Header = () => {
 ```
 
 #### Opción 2: Archivo centralizado de íconos (recomendado para muchos íconos)
+
 Crea un archivo `src/components/common/Icon/index.ts`:
 
 ```tsx
@@ -202,6 +216,7 @@ export const Header = () => {
 ```
 
 **Propiedades comunes de los íconos:**
+
 - `size`: Tamaño del ícono (número o string)
 - `color`: Color del ícono
 - `strokeWidth`: Grosor del trazo
