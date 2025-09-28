@@ -1,6 +1,6 @@
 import type React from "react"
-import { ChevronLeft, Dumbbell, Home, Utensils } from "lucide-react"
-
+import BackButton from "../../components/common/Button/BackButton"
+import BottomNavigation from "../../components/common/Navigation/BottomNavigation"
 // Interfaz para los datos del perfil
 interface DatosPerfil {
   nombre: string
@@ -54,9 +54,7 @@ const Profile: React.FC<ProfileProps> = ({
     <div className="min-h-screen bg-[#1A1A1A] text-white">
       {/* Header con botón de regreso */}
       <div className="flex items-center justify-start p-4">
-        <button onClick={onBack} className="p-2 hover:bg-gray-800 rounded-lg transition-colors" aria-label="Regresar">
-          <ChevronLeft className="w-6 h-6" />
-        </button>
+        <BackButton onClick={onBack} />
       </div>
 
       {/* Contenido principal */}
@@ -120,33 +118,11 @@ const Profile: React.FC<ProfileProps> = ({
       </div>
 
       {/* Navegación inferior */}
-      <div className="fixed bottom-0 left-0 right-0 bg-[#1A1A1A] border-t border-gray-700">
-        <div className="flex justify-around items-center py-4">
-          <button
-            onClick={onNavigateExercises}
-            className="p-3 hover:bg-gray-800 rounded-lg transition-colors"
-            aria-label="Ejercicios"
-          >
-            <Dumbbell className="w-6 h-6" />
-          </button>
-
-          <button
-            onClick={onNavigateHome}
-            className="p-3 hover:bg-gray-800 rounded-lg transition-colors"
-            aria-label="Inicio"
-          >
-            <Home className="w-6 h-6" />
-          </button>
-
-          <button
-            onClick={onNavigateNutrition}
-            className="p-3 hover:bg-gray-800 rounded-lg transition-colors"
-            aria-label="Nutrición"
-          >
-            <Utensils className="w-6 h-6" />
-          </button>
-        </div>
-      </div>
+      <BottomNavigation
+        onNavigateExercises={onNavigateExercises}
+        onNavigateHome={onNavigateHome}
+        onNavigateNutrition={onNavigateNutrition}
+      />
     </div>
   )
 }
