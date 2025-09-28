@@ -1,6 +1,6 @@
 # FitLife Frontend
 
-Una aplicación web de fitness y nutrición construida con React, Vite y Tailwind CSS.
+Una aplicación web de fitness y nutrición construida con React, TypeScript, Vite y Tailwind CSS.
 
 ## 🚀 Comenzando
 
@@ -37,8 +37,10 @@ La aplicación estará disponible en `http://localhost:3001`
 ### Scripts Disponibles
 
 - `npm run dev` - Inicia el servidor de desarrollo
-- `npm run build` - Construye la aplicación para producción
+- `npm run build` - Construye la aplicación para producción (incluye verificación de tipos)
 - `npm run preview` - Previsualiza la construcción de producción localmente
+- `npm run type-check` - Verifica los tipos de TypeScript sin compilar
+- `npm run lint` - Ejecuta verificación de tipos y linting
 
 ## 📁 Estructura del Proyecto
 
@@ -80,9 +82,9 @@ src/
 ## 🛠 Stack Tecnológico
 
 - **React 19** - Librería de interfaz de usuario
+- **TypeScript** - Superset tipado de JavaScript
 - **Vite** - Herramienta de construcción y servidor de desarrollo
 - **Tailwind CSS** - Framework CSS utility-first
-- **JavaScript** - Lenguaje de programación
 
 ## 🌟 Características
 
@@ -97,8 +99,39 @@ src/
 ### Agregando Nuevos Componentes
 
 1. Crea una nueva carpeta en la categoría apropiada (`common`, `exercises`, o `nutrition`)
-2. Agrega tu archivo de componente (ej., `ComponentName.jsx`)
-3. Exporta el componente desde el archivo
+2. Agrega tu archivo de componente (ej., `ComponentName.tsx`)
+3. Define los tipos TypeScript para las props del componente
+4. Exporta el componente desde el archivo
+
+Ejemplo de componente TypeScript:
+
+```tsx
+import React from 'react'
+
+interface ButtonProps {
+  children: React.ReactNode
+  onClick: () => void
+  variant?: 'primary' | 'secondary'
+  disabled?: boolean
+}
+
+export const Button: React.FC<ButtonProps> = ({ 
+  children, 
+  onClick, 
+  variant = 'primary', 
+  disabled = false 
+}) => {
+  return (
+    <button
+      onClick={onClick}
+      disabled={disabled}
+      className={`px-4 py-2 rounded ${variant === 'primary' ? 'bg-blue-500 text-white' : 'bg-gray-200'}`}
+    >
+      {children}
+    </button>
+  )
+}
+```
 
 ### Estilos
 
