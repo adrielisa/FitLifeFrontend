@@ -85,6 +85,7 @@ src/
 - **TypeScript** - Superset tipado de JavaScript
 - **Vite** - Herramienta de construcción y servidor de desarrollo
 - **Tailwind CSS** - Framework CSS utility-first
+- **Lucide React** - Librería de íconos SVG para React
 
 ## 🌟 Características
 
@@ -141,6 +142,78 @@ Este proyecto usa Tailwind CSS para los estilos. Agrega clases directamente a tu
 <div className="bg-white p-6 rounded-lg shadow">
   <h3 className="text-xl font-semibold text-gray-900 mb-2">Título</h3>
 </div>
+```
+
+### Íconos
+
+El proyecto utiliza **Lucide React** para los íconos. Hay dos enfoques recomendados:
+
+#### Opción 1: Importación directa (recomendado para pocos íconos)
+```tsx
+import { Heart, User, Settings } from 'lucide-react'
+
+export const Header = () => {
+  return (
+    <header className="flex items-center gap-4">
+      <Heart className="w-6 h-6 text-red-500" />
+      <User className="w-6 h-6 text-blue-500" />
+      <Settings className="w-6 h-6 text-gray-500" />
+    </header>
+  )
+}
+```
+
+#### Opción 2: Archivo centralizado de íconos (recomendado para muchos íconos)
+Crea un archivo `src/components/common/Icon/index.ts`:
+
+```tsx
+export { 
+  Heart,
+  User, 
+  Settings,
+  Home,
+  Dumbbell,
+  Apple,
+  Calendar,
+  TrendingUp,
+  Plus,
+  Minus,
+  Edit,
+  Trash2,
+  Save,
+  X
+} from 'lucide-react'
+```
+
+Luego úsalos en tus componentes:
+
+```tsx
+import { Heart, User, Settings } from '@/components/common/Icon'
+
+export const Header = () => {
+  return (
+    <header className="flex items-center gap-4">
+      <Heart className="w-6 h-6 text-red-500" />
+      <User className="w-6 h-6 text-blue-500" />
+      <Settings className="w-6 h-6 text-gray-500" />
+    </header>
+  )
+}
+```
+
+**Propiedades comunes de los íconos:**
+- `size`: Tamaño del ícono (número o string)
+- `color`: Color del ícono
+- `strokeWidth`: Grosor del trazo
+- `className`: Clases de Tailwind CSS
+
+```tsx
+<Heart 
+  size={24} 
+  color="red" 
+  strokeWidth={2}
+  className="hover:scale-110 transition-transform" 
+/>
 ```
 
 ### Integración con API
