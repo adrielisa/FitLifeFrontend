@@ -1,6 +1,7 @@
 import type React from "react"
 import BackButton from "../../components/common/Button/BackButton"
 import BottomNavigation from "../../components/common/Navigation/BottomNavigation"
+import { useNavigate } from "react-router-dom"
 // Interfaz para los datos del perfil
 interface DatosPerfil {
   nombre: string
@@ -40,6 +41,16 @@ const Profile: React.FC<ProfileProps> = ({
   onNavigateExercises,
   onNavigateNutrition,
 }) => {
+  const navigate = useNavigate()
+
+  const handleBack = () => {
+    if (onBack) {
+      onBack()
+    } else {
+      navigate('/')
+    }
+  }
+
   // Función para obtener las iniciales del nombre
   const getInitials = (name: string) => {
     return name
@@ -54,7 +65,7 @@ const Profile: React.FC<ProfileProps> = ({
     <div className="min-h-screen bg-[#1A1A1A] text-white">
       {/* Header con botón de regreso */}
       <div className="flex items-center justify-start p-4">
-        <BackButton onClick={onBack} />
+        <BackButton onClick={handleBack} />
       </div>
 
       {/* Contenido principal */}
