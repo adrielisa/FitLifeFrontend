@@ -75,7 +75,7 @@ const ExercisePlanSelection: React.FC<ExercisePlanSelectionProps> = ({
   const exercises = exerciseOptions || defaultExerciseOptions
 
   const handleExerciseClick = (exerciseId: string) => {
-  setSelectedExercises((prev) => {
+    setSelectedExercises((prev) => {
     const newSelected = new Set(prev)
 
     if (newSelected.has(exerciseId)) {
