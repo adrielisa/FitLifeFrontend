@@ -31,7 +31,7 @@ function App(): React.JSX.Element {
                   <div className="flex justify-between items-center py-4">
                     <h1 className="text-2xl font-bold text-gray-900">FitLife</h1>
                     <nav className="space-x-4">
-                      <Link to="/" className="text-gray-600 hover:text-gray-900">
+                      <Link to="/home" className="text-gray-600 hover:text-gray-900">
                         Home
                       </Link>
                       <Link to="/exercises" className="text-gray-600 hover:text-gray-900">
