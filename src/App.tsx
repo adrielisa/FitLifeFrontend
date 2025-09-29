@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import Login from "./pages/Login-Register/Login";
 import Register from "./pages/Login-Register/Register";
 import Profile from "./pages/Profile/Profile";
+import ExercisesMain from "./pages/Exercises/ExercisesMain";
 import Home from "./pages/Home/Home";
 
 function App(): React.JSX.Element {
@@ -13,6 +14,7 @@ function App(): React.JSX.Element {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/profile" element={<Profile />} />
+        <Route path="/exercises" element={<ExercisesMain />} />
         <Route path="/home" element={<Home />} />
 
         {/* Otras rutas con header y layout */}
