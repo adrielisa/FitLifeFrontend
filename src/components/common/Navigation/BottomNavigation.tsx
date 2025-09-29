@@ -55,7 +55,7 @@ const BottomNavigation: React.FC<BottomNavigationProps> = ({
             key={index}
             onClick={item.onClick}
             className={`p-3 rounded-lg transition-colors ${
-              item.isActive ? "bg-blue-600 text-white" : "hover:bg-[#262626] text-gray-300 hover:text-white"
+              item.isActive ? "bg-[#262626] text-white" : "hover:bg-[#262626] text-gray-300 hover:text-white"
             }`}
             aria-label={item.label}
           >
