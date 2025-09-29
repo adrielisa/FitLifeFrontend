@@ -9,6 +9,7 @@ import ExercisesMain from "./pages/Exercises/ExercisesMain";
 import Home from "./pages/Home/Home";
 import WorkoutPlan from "./pages/Exercises/WorkoutPlan";
 import ExerciseDetail from "./pages/Exercises/ExerciseDetails";
+import ExerciseInformation from "./pages/Exercises/ExerciseInformation";
 /* import LandingPage from "./pages/LandingPage/LadingPage"; */
 
 function App(): React.JSX.Element {
@@ -25,6 +26,7 @@ function App(): React.JSX.Element {
         <Route path="/home" element={<Home />} />
         <Route path="/workoutPlan" element={<WorkoutPlan />} />
         <Route path="/exercise-detail" element={<ExerciseDetail />} />
+        <Route path="/exerciseInfo" element={<ExerciseInformation />} />
         {/*<Route path="/" element={<LandingPage />} /> */}
 
         {/* Otras rutas con header y layout */}
@@ -37,7 +39,7 @@ function App(): React.JSX.Element {
                   <div className="flex justify-between items-center py-4">
                     <h1 className="text-2xl font-bold text-gray-900">FitLife</h1>
                     <nav className="space-x-4">
-                      <Link to="/" className="text-gray-600 hover:text-gray-900">
+                      <Link to="/home" className="text-gray-600 hover:text-gray-900">
                         Home
                       </Link>
                       <Link to="/exercises" className="text-gray-600 hover:text-gray-900">
@@ -45,6 +47,9 @@ function App(): React.JSX.Element {
                       </Link>
                       <Link to="/exercisesPlan" className="text-gray-600 hover:text-gray-900">
                         Exercises
+                      </Link>
+                      <Link to="/exerciseInfo" className="text-gray-600 hover:text-gray-900">
+                        Info
                       </Link>
                       <Link to="/nutrition" className="text-gray-600 hover:text-gray-900">
                         Nutrition
