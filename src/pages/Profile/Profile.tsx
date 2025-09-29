@@ -47,7 +47,7 @@ const Profile: React.FC<ProfileProps> = ({
     if (onBack) {
       onBack()
     } else {
-      navigate('/')
+      navigate(-1) // Navega a la página anterior
     }
   }
 

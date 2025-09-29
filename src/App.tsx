@@ -4,6 +4,7 @@ import Login from "./pages/Login-Register/Login";
 import Register from "./pages/Login-Register/Register";
 import Profile from "./pages/Profile/Profile";
 import ExercisePlanSelection from "./pages/Exercises/ExercisePlanSelection";
+import ExerciseSelection from "./pages/Exercises/ExerciseSelection";
 import ExercisesMain from "./pages/Exercises/ExercisesMain";
 import Home from "./pages/Home/Home";
 import WorkoutPlan from "./pages/Exercises/WorkoutPlan";
@@ -17,6 +18,8 @@ function App(): React.JSX.Element {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/profile" element={<Profile />} />
+        <Route path="/exercises" element={<ExercisePlanSelection />} />
+        <Route path="/exercise-selection" element={<ExerciseSelection />} />
         <Route path="/exercisesPlan" element={<ExercisePlanSelection />} />
         <Route path="/exercises" element={<ExercisesMain />} />
         <Route path="/home" element={<Home />} />
