@@ -4,8 +4,11 @@ import ActivityTracker from "../../components/exercises/ActivityTracker/Activity
 import WeeklyProgress from "../../components/exercises/WeeklyProgress/WeeklyProgress";
 import ProgressBar from "../../components/common/ProgressBar/ProgressBar";
 import BottomNavigation from "../../components/common/Navigation/BottomNavigation";
+import { useNavigate } from "react-router-dom";
 
 export default function ExercisesMain() {
+    const navigate = useNavigate();
+
     const [activityData] = useState({
         exercise: {
             minutes: 10,
@@ -34,7 +37,7 @@ export default function ExercisesMain() {
     });
 
     const handleStartWorkout = () => {
-        alert("Iniciando entrenamiento...");
+        navigate('/workoutPlan');
     };
 
     const handleChangePlan = () => {

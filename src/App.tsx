@@ -6,6 +6,7 @@ import Profile from "./pages/Profile/Profile";
 import ExercisePlanSelection from "./pages/Exercises/ExercisePlanSelection";
 import ExercisesMain from "./pages/Exercises/ExercisesMain";
 import Home from "./pages/Home/Home";
+import WorkoutPlan from "./pages/Exercises/WorkoutPlan";
 
 function App(): React.JSX.Element {
   return (
@@ -18,6 +19,7 @@ function App(): React.JSX.Element {
         <Route path="/exercisesPlan" element={<ExercisePlanSelection />} />
         <Route path="/exercises" element={<ExercisesMain />} />
         <Route path="/home" element={<Home />} />
+        <Route path="/workoutPlan" element={<WorkoutPlan />} />
 
         {/* Otras rutas con header y layout */}
         <Route
