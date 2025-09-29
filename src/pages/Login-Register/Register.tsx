@@ -1,7 +1,10 @@
 import { useState } from "react"
 import { ChevronLeft } from "lucide-react"
+import { useNavigate } from "react-router-dom"
 
 const Register: React.FC = () => {
+    const navigate = useNavigate()
+    
     // Estados para el primer formulario
     const [nombre, setNombre] = useState("");
     const [correo, setCorreo] = useState("");
@@ -37,9 +40,7 @@ const Register: React.FC = () => {
             alert("Por favor completa todos los campos");
             return;
         }
-        
-        // Mostrar alert con todos los datos
-        alert(`Registro completado:\n\nDatos Personales:\nNombre: ${nombre}\nCorreo: ${correo}\nContraseña: ${contrasena}\n\nDatos Físicos:\nEdad: ${edad}\nPeso: ${peso}\nEstatura: ${estatura}\nNivel de actividad: ${nivelActividad}\nMeta: ${meta}`);
+        navigate('/login');
     };
 
     const handleVolver = () => {
