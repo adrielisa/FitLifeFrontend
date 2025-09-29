@@ -4,6 +4,8 @@ import Login from "./pages/Login-Register/Login";
 import Register from "./pages/Login-Register/Register";
 import Profile from "./pages/Profile/Profile";
 import ExercisePlanSelection from "./pages/Exercises/ExercisePlanSelection";
+import ExerciseSelection from "./pages/Exercises/ExerciseSelection";
+
 
 function App(): React.JSX.Element {
   return (
@@ -14,6 +16,7 @@ function App(): React.JSX.Element {
         <Route path="/register" element={<Register />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/exercises" element={<ExercisePlanSelection />} />
+        <Route path="/exercise-selection" element={<ExerciseSelection />} />
 
         {/* Otras rutas con header y layout */}
         <Route

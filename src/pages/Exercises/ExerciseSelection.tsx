@@ -13,7 +13,7 @@ interface ExerciseOption {
 }
 
 // Props del componente
-interface ExercisePlanSelectionProps {
+interface ExerciseSelectionProps {
   onBack?: () => void
   onNavigateExercises?: () => void
   onNavigateHome?: () => void
@@ -24,7 +24,7 @@ interface ExercisePlanSelectionProps {
   userAvatar?: string
 }
 
-const ExercisePlanSelection: React.FC<ExercisePlanSelectionProps> = ({
+const ExerciseSelection: React.FC<ExerciseSelectionProps> = ({
   onNavigateExercises,
   onNavigateHome,
   onNavigateNutrition,
@@ -34,38 +34,38 @@ const ExercisePlanSelection: React.FC<ExercisePlanSelectionProps> = ({
   userAvatar,
 }) => {
 
-  const navigate = useNavigate()
+    const navigate = useNavigate()
 
   // Datos mock de ejercicios
   const defaultExerciseOptions: ExerciseOption[] = [
     {
-      id: "brazos",
-      name: "Brazos",
+      id: "lagartijas",
+      name: "Lagartijas",
       imageUrl: "/img1.jpg",
-    },
-    {
-      id: "piernas",
-      name: "Piernas",
-      imageUrl: "/img2.jpg",
     },
     {
       id: "abdominales",
       name: "Abdominales",
+      imageUrl: "/img2.jpg",
+    },
+    {
+      id: "plancha",
+      name: "Plancha",
       imageUrl: "/img3.jpg",
     },
     {
-      id: "espalda",
-      name: "Espalda",
+      id: "sentadillas",
+      name: "Sentadillas",
       imageUrl: "/img4.jpg",
     },
     {
-      id: "pecho",
-      name: "Pecho",
+      id: "correr",
+      name: "Correr",
       imageUrl: "/img5.jpg",
     },
     {
-      id: "cardio",
-      name: "Cardio",
+      id: "saltar la cuerda",
+      name: "Saltar la cuerda",
       imageUrl: "/img6.jpg",
     },
   ]
@@ -82,8 +82,8 @@ const ExercisePlanSelection: React.FC<ExercisePlanSelectionProps> = ({
       // Si ya está seleccionado, lo quitamos
       newSelected.delete(exerciseId)
     } else {
-      // Solo permitir máximo 2 selecciones
-      if (newSelected.size < 2) {
+      // Solo permitir mas de 6 selecciones
+      if (newSelected.size <= 6) {
         newSelected.add(exerciseId)
       }
     }
@@ -100,7 +100,6 @@ const ExercisePlanSelection: React.FC<ExercisePlanSelectionProps> = ({
     if (onCreateCustomPlan) {
       onCreateCustomPlan()
     }
-    navigate('/exercise-selection') // Añade esta línea para la navegación
   }
 
   const handleProfileClick = () => {
@@ -115,7 +114,7 @@ const ExercisePlanSelection: React.FC<ExercisePlanSelectionProps> = ({
 
   return (
     <div className="min-h-screen bg-[#1A1A1A] text-white pb-20">
-      {/* Header */}
+     {/* Header */}
       <Header
         isActive={true}
         showBackButton={true}
@@ -128,7 +127,7 @@ const ExercisePlanSelection: React.FC<ExercisePlanSelectionProps> = ({
       {/* Título */}
       <div className="px-4 mb-8">
         <h1 className="text-xl md:text-2xl lg:text-3xl font-bold text-center">
-  Selecciona un plan de tu interés
+  Selecciona ejercicios para tu plan
 </h1>
       </div>
 
@@ -172,7 +171,7 @@ const ExercisePlanSelection: React.FC<ExercisePlanSelectionProps> = ({
           onClick={handleCustomPlanClick}
           className="w-full bg-orange-500 hover:bg-orange-600 text-white font-semibold py-3 md:py-4 px-4 md:px-6 rounded-xl transition-colors duration-200 text-sm md:text-base lg:text-lg"
         >
-          Crear plan personalizado
+          Crear
         </button>
       </div>
 
@@ -187,4 +186,4 @@ const ExercisePlanSelection: React.FC<ExercisePlanSelectionProps> = ({
   )
 }
 
-export default ExercisePlanSelection
+export default ExerciseSelection
