@@ -1,6 +1,9 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import ExerciseView from "../../components/exercises/ExerciseView/ExerciseView";
+import Header from "../../components/common/Header/Header";
+import ExerciseCard from "../../components/exercises/ExerciseCard/ExerciseCard";
+import ExerciseControls from "../../components/exercises/ExerciseControls/ExerciseControls";
+import BottomNavigation from "../../components/common/Navigation/BottomNavigation";
 
 // Mock data de ejercicios
 const mockExercises = [
@@ -44,7 +47,12 @@ export default function ExerciseDetail() {
     const isLastExercise = currentExerciseIndex === mockExercises.length - 1;
 
     const handleBack = () => {
-        navigate('/workout-plan');
+        navigate('/workoutPlan');
+    };
+
+    const handleProfile = () => {
+        alert("Ir a perfil de usuario...");
+        // navigate('/profile');
     };
 
     const handlePrevious = () => {
@@ -72,15 +80,28 @@ export default function ExerciseDetail() {
     };
 
     return (
-        <ExerciseView
-            exercise={currentExercise}
-            onBack={handleBack}
-            onPrevious={handlePrevious}
-            onNext={handleNext}
-            onComplete={handleComplete}
-            onCancel={handleCancel}
-            disablePrevious={isFirstExercise}
-            disableNext={isLastExercise}
-        />
+        <div className="min-h-screen bg-[#2d2d2d] pb-40">
+            <Header
+                isActive={true}
+                showBackButton={true}
+                onBack={handleBack}
+                showProfileButton={true}
+                onProfile={handleProfile}
+                userAvatar="https://avatarfiles.alphacoders.com/326/thumb-1920-326022.jpg"
+            />
+
+            <ExerciseCard exercise={currentExercise} />
+
+            <ExerciseControls
+                onPrevious={handlePrevious}
+                onNext={handleNext}
+                onComplete={handleComplete}
+                onCancel={handleCancel}
+                disablePrevious={isFirstExercise}
+                disableNext={isLastExercise}
+            />
+
+            <BottomNavigation />
+        </div>
     );
 }

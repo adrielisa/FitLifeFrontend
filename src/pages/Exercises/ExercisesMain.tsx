@@ -1,4 +1,5 @@
 import { useState } from "react";
+import Header from "../../components/common/Header/Header";
 import WorkoutControls from "../../components/exercises/WorkoutControls/WorkoutControls";
 import ActivityTracker from "../../components/exercises/ActivityTracker/ActivityTracker";
 import WeeklyProgress from "../../components/exercises/WeeklyProgress/WeeklyProgress";
@@ -8,6 +9,15 @@ import { useNavigate } from "react-router-dom";
 
 export default function ExercisesMain() {
     const navigate = useNavigate();
+
+    const handleBack = () => {
+        navigate('/workoutPlan');
+    };
+
+    const handleProfile = () => {
+        alert("Ir a perfil de usuario...");
+        // navigate('/profile');
+    };
 
     const [activityData] = useState({
         exercise: {
@@ -46,6 +56,14 @@ export default function ExercisesMain() {
 
     return (
         <div className="min-h-screen bg-[#2d2d2d] pb-20">
+            <Header
+                isActive={true}
+                showBackButton={true}
+                onBack={handleBack}
+                showProfileButton={true}
+                onProfile={handleProfile}
+                userAvatar="https://avatarfiles.alphacoders.com/326/thumb-1920-326022.jpg"
+            />
             <WorkoutControls
                 onStartWorkout={handleStartWorkout}
                 onChangePlan={handleChangePlan}

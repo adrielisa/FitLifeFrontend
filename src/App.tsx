@@ -8,6 +8,7 @@ import ExerciseSelection from "./pages/Exercises/ExerciseSelection";
 import ExercisesMain from "./pages/Exercises/ExercisesMain";
 import Home from "./pages/Home/Home";
 import WorkoutPlan from "./pages/Exercises/WorkoutPlan";
+import ExerciseDetail from "./pages/Exercises/ExerciseDetails";
 /* import LandingPage from "./pages/LandingPage/LadingPage"; */
 
 function App(): React.JSX.Element {
@@ -18,12 +19,12 @@ function App(): React.JSX.Element {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/profile" element={<Profile />} />
-        <Route path="/exercises" element={<ExercisePlanSelection />} />
-        <Route path="/exercise-selection" element={<ExerciseSelection />} />
         <Route path="/exercisesPlan" element={<ExercisePlanSelection />} />
+        <Route path="/exercise-selection" element={<ExerciseSelection />} />
         <Route path="/exercises" element={<ExercisesMain />} />
         <Route path="/home" element={<Home />} />
         <Route path="/workoutPlan" element={<WorkoutPlan />} />
+        <Route path="/exercise-detail" element={<ExerciseDetail />} />
         {/*<Route path="/" element={<LandingPage />} /> */}
 
         {/* Otras rutas con header y layout */}
