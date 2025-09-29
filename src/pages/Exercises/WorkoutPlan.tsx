@@ -51,7 +51,7 @@ export default function WorkoutPlan() {
                     {weekData.map((day, index) => (
                         <div key={index} className="flex flex-col items-center">
                             <span className="text-gray-400 text-sm mb-3">{day.day}</span>
-                            <div className={`w-14 h-14 rounded-full flex items-center justify-center ${day.completed
+                            <div className={`w-11 h-11 rounded-full flex items-center justify-center ${day.completed
                                     ? 'bg-white border-2 border-white'
                                     : 'bg-[#404040] border-2 border-[#404040]'
                                 }`}>
