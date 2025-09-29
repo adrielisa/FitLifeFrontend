@@ -4,6 +4,7 @@ import Login from "./pages/Login-Register/Login";
 import Register from "./pages/Login-Register/Register";
 import Profile from "./pages/Profile/Profile";
 import ExercisesMain from "./pages/Exercises/ExercisesMain";
+import Home from "./pages/Home/Home";
 
 function App(): React.JSX.Element {
   return (
@@ -14,6 +15,7 @@ function App(): React.JSX.Element {
         <Route path="/register" element={<Register />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/exercises" element={<ExercisesMain />} />
+        <Route path="/home" element={<Home />} />
 
         {/* Otras rutas con header y layout */}
         <Route
