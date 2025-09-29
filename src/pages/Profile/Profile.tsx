@@ -1,26 +1,26 @@
-import type React from "react"
-import BackButton from "../../components/common/Button/BackButton"
-import BottomNavigation from "../../components/common/Navigation/BottomNavigation"
-import { useNavigate } from "react-router-dom"
+import type React from "react";
+import BackButton from "../../components/common/Button/BackButton";
+import BottomNavigation from "../../components/common/Navigation/BottomNavigation";
+import { useNavigate } from "react-router-dom";
 // Interfaz para los datos del perfil
 interface DatosPerfil {
-  nombre: string
-  correo: string
-  edad: number
-  peso: string
-  estatura: string
-  nivelActividad: string
-  meta: string
-  urlAvatar?: string
+  nombre: string;
+  correo: string;
+  edad: number;
+  peso: string;
+  estatura: string;
+  nivelActividad: string;
+  meta: string;
+  urlAvatar?: string;
 }
 
 // Props del componente
 interface ProfileProps {
-  profileData?: DatosPerfil
-  onBack?: () => void
-  onNavigateHome?: () => void
-  onNavigateExercises?: () => void
-  onNavigateNutrition?: () => void
+  profileData?: DatosPerfil;
+  onBack?: () => void;
+  onNavigateHome?: () => void;
+  onNavigateExercises?: () => void;
+  onNavigateNutrition?: () => void;
 }
 
 // Datos mock para ejemplo (reemplazar con datos reales del backend)
@@ -32,7 +32,7 @@ const datosMock: DatosPerfil = {
   estatura: "170 cm",
   nivelActividad: "Alto",
   meta: "Ganar masa muscular",
-}
+};
 
 const Profile: React.FC<ProfileProps> = ({
   profileData = datosMock,
@@ -41,15 +41,15 @@ const Profile: React.FC<ProfileProps> = ({
   onNavigateExercises,
   onNavigateNutrition,
 }) => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const handleBack = () => {
     if (onBack) {
-      onBack()
+      onBack();
     } else {
-      navigate(-1) // Navega a la página anterior
+      navigate(-1); // Navega a la página anterior
     }
-  }
+  };
 
   // Función para obtener las iniciales del nombre
   const getInitials = (name: string) => {
@@ -58,13 +58,13 @@ const Profile: React.FC<ProfileProps> = ({
       .map((word) => word.charAt(0))
       .join("")
       .toUpperCase()
-      .slice(0, 2)
-  }
+      .slice(0, 2);
+  };
 
   return (
     <div className="min-h-screen bg-[#1A1A1A] text-white">
       {/* Header con botón de regreso */}
-      <div className="flex items-center justify-start p-4">
+      <div className="flex items-center justify-start p-5">
         <BackButton onClick={handleBack} />
       </div>
 
@@ -79,49 +79,53 @@ const Profile: React.FC<ProfileProps> = ({
               className="w-32 h-32 rounded-full object-cover border-4 border-gray-700"
             />
           ) : (
-            <div className="w-32 h-32 rounded-full bg-gray-700 flex items-center justify-center text-2xl font-bold border-4 border-gray-600">
+            <div className="w-46 h-46 rounded-full bg-gray-700 flex items-center justify-center text-2xl font-bold border-4 border-gray-600">
               {getInitials(profileData.nombre)}
             </div>
           )}
         </div>
 
         {/* Nombre */}
-        <h1 className="text-2xl font-bold mb-8 text-center">{profileData.nombre}</h1>
+        <h1 className="text-2xl font-bold mb-8 text-center">
+          {profileData.nombre}
+        </h1>
 
-        {/* Información del perfil */}
-        <div className="w-full max-w-sm space-y-4">
+        {/* Información del perfil en un solo bloque */}
+        <div className="w-full md:max-w-4xl bg-[#262626] rounded-lg p-5 space-y-8">
           {/* Correo */}
-          <div className="bg-[#262626] rounded-lg p-3 flex justify-between items-center">
+          <div className="flex justify-between items-center">
             <span className="text-gray-300 font-medium">Correo:</span>
             <span className="text-white">{profileData.correo}</span>
           </div>
 
           {/* Edad */}
-          <div className="bg-[#262626] rounded-lg p-3 flex justify-between items-center">
+          <div className="flex justify-between items-center">
             <span className="text-gray-300 font-medium">Edad:</span>
             <span className="text-white">{profileData.edad}</span>
           </div>
 
           {/* Peso */}
-          <div className="bg-[#262626] rounded-lg p-3 flex justify-between items-center">
+          <div className="flex justify-between items-center">
             <span className="text-gray-300 font-medium">Peso:</span>
             <span className="text-white">{profileData.peso}</span>
           </div>
 
           {/* Estatura */}
-          <div className="bg-[#262626] rounded-lg p-3 flex justify-between items-center">
+          <div className="flex justify-between items-center">
             <span className="text-gray-300 font-medium">Estatura:</span>
             <span className="text-white">{profileData.estatura}</span>
           </div>
 
           {/* Nivel de actividad */}
-          <div className="bg-[#262626] rounded-lg p-3 flex justify-between items-center">
-            <span className="text-gray-300 font-medium">Nivel de actividad:</span>
+          <div className="flex justify-between items-center">
+            <span className="text-gray-300 font-medium">
+              Nivel de actividad:
+            </span>
             <span className="text-white">{profileData.nivelActividad}</span>
           </div>
 
           {/* Meta */}
-          <div className="bg-[#262626] rounded-lg p-3 flex justify-between items-center">
+          <div className="flex justify-between items-center">
             <span className="text-gray-300 font-medium">Meta:</span>
             <span className="text-white">{profileData.meta}</span>
           </div>
@@ -135,6 +139,6 @@ const Profile: React.FC<ProfileProps> = ({
         onNavigateNutrition={onNavigateNutrition}
       />
     </div>
-  )
-}
-export default Profile
+  );
+};
+export default Profile;
