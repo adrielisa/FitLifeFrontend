@@ -1,9 +1,12 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import Header from "../../components/common/Header/Header";
 import PlanHeader from "../../components/exercises/PlanHeader/PlanHeader";
 import StartExerciseButton from "../../components/exercises/StartExerciseButton/StartExerciseButton";
 import BottomNavigation from "../../components/common/Navigation/BottomNavigation";
 
 export default function WorkoutPlan() {
+    const navigate = useNavigate();
     // Datos simulados para el progreso semanal
     const [weekData] = useState([
         { day: 'L', completed: true },
@@ -15,13 +18,29 @@ export default function WorkoutPlan() {
         { day: 'D', completed: false, isToday: false }
     ]);
 
+    const handleBack = () => {
+        navigate('/exercises');
+    };
+
+    const handleProfile = () => {
+        alert("Ir a perfil de usuario...");
+        // navigate('/profile');
+    };
+
     const handleStartExercise = () => {
-        alert("Iniciando rutina de ejercicios...");
-        // Aquí navegarías a la pantalla de ejercicios
+        navigate('/exercise-detail');
     };
 
     return (
         <div className="min-h-screen bg-[#2d2d2d] pb-20">
+            <Header
+                isActive={true}
+                showBackButton={true}
+                onBack={handleBack}
+                showProfileButton={true}
+                onProfile={handleProfile}
+                userAvatar="https://avatarfiles.alphacoders.com/326/thumb-1920-326022.jpg"
+            />
 
             <PlanHeader planName="Plan pro" />
 
@@ -33,8 +52,8 @@ export default function WorkoutPlan() {
                         <div key={index} className="flex flex-col items-center">
                             <span className="text-gray-400 text-sm mb-3">{day.day}</span>
                             <div className={`w-14 h-14 rounded-full flex items-center justify-center ${day.completed
-                                ? 'bg-white border-2 border-white'
-                                : 'bg-[#404040] border-2 border-[#404040]'
+                                    ? 'bg-white border-2 border-white'
+                                    : 'bg-[#404040] border-2 border-[#404040]'
                                 }`}>
                                 {day.completed && (
                                     <svg className="w-8 h-8 text-black" fill="currentColor" viewBox="0 0 20 20">
