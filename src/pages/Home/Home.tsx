@@ -88,7 +88,7 @@ const Home: React.FC = () => {
     <div className="bg-[#2A2A2A] p-6 rounded-xl mb-24">
         <div className="flex items-center justify-between mb-6">
             <div className="flex items-center gap-2">
-                <Flame className="text-green-600" />
+                <Flame className="text-white" />
                 <span>Calorías</span>
             </div>
             <span className="text-sm text-gray-300">{consumed}/{total}</span>
