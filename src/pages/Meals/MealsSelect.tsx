@@ -1,3 +1,4 @@
+import BottomNavigation from "../../components/common/Navigation/BottomNavigation";
 import Header from "../../components/common/Header/Header";
 import { Minus, Plus, Search } from "lucide-react";
 import React, { useState } from "react";
@@ -64,12 +65,25 @@ const MealsSelect: React.FC = () => {
     };
 
     const navigate = useNavigate();
+    
     const handleBack = () => {
         navigate(-1);
     };
 
     function handleProfile(): void {
         navigate("/profile");
+    }
+
+    function onNavigateExercises(): void {
+        throw new Error("Function not implemented.");
+    }
+
+    function onNavigateHome(): void {
+        throw new Error("Function not implemented.");
+    }
+
+    function onNavigateNutrition(): void {
+        throw new Error("Function not implemented.");
     }
 
     return (
@@ -94,7 +108,7 @@ const MealsSelect: React.FC = () => {
                 <span className="absolute left-4 top-4"><Search /></span>
             </div>
 
-            <div className="space-y-8 overflow-y-auto max-h-[580px] w-full mt-8 mb-10 p-4">
+            <div className="space-y-8 overflow-y-auto max-h-[530px] w-full mt-8 mb-5 p-4">
                 {filteredMeals.map((meal) => {
                     const qty = quantities[meal.id] || 1;
                     return (
@@ -139,6 +153,11 @@ const MealsSelect: React.FC = () => {
             <button className="mt-4 w-full bg-[#55A91D] p-3 rounded-2xl font-semibold">
                 Añadir
             </button>
+            <BottomNavigation
+                onNavigateExercises={onNavigateExercises}
+                onNavigateHome={onNavigateHome}
+                onNavigateNutrition={onNavigateNutrition}
+            />
         </div>
     );
 };

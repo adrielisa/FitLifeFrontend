@@ -47,7 +47,11 @@ const Meals: React.FC = () => {
     }
 
     const handleClick = () => {
-        navigate("/meals-select"); // Aquí defines la ruta a la que quieres ir
+        navigate("/meals-select");
+    };
+
+    const handleClick2 = () => {
+        navigate("/meals-historial");
     };
 
     return (
@@ -62,7 +66,7 @@ const Meals: React.FC = () => {
             />
 
             <div className="p-11 space-y-8">
-                <button className="w-full flex items-center justify-between bg-[#55A91D] text-white font-semibold py-3 px-4 rounded-xl shadow-md">
+                <button onClick={handleClick2} className="w-full flex items-center justify-between bg-[#55A91D] text-white font-semibold py-3 px-4 rounded-xl shadow-md">
                     Ver historial de comidas
                     <span className="text-2xl"><ChevronRight /></span>
                 </button>
