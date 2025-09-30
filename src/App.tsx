@@ -11,6 +11,7 @@ import WorkoutPlan from "./pages/Exercises/WorkoutPlan";
 import ExerciseDetail from "./pages/Exercises/ExerciseDetails";
 import ExerciseInformation from "./pages/Exercises/ExerciseInformation";
 import Meals from "./pages/Meals/Meals";
+import MealsSelect from "./pages/Meals/MealsSelect";
 /* import LandingPage from "./pages/LandingPage/LadingPage"; */
 
 function App(): React.JSX.Element {
@@ -29,6 +30,7 @@ function App(): React.JSX.Element {
         <Route path="/exercise-detail" element={<ExerciseDetail />} />
         <Route path="/exerciseInfo" element={<ExerciseInformation />} />
         <Route path="/meals" element={<Meals />} />
+        <Route path="/meals-select" element={<MealsSelect />} />
         {/*<Route path="/" element={<LandingPage />} /> */}
 
         {/* Otras rutas con header y layout */}

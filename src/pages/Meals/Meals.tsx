@@ -46,6 +46,10 @@ const Meals: React.FC = () => {
         throw new Error("Function not implemented.");
     }
 
+    const handleClick = () => {
+        navigate("/meals-select"); // Aquí defines la ruta a la que quieres ir
+    };
+
     return (
         <div className="min-h-screen bg-[#1A1A1A] text-white">
             <Header
@@ -66,7 +70,7 @@ const Meals: React.FC = () => {
                 <div>
                     <h2 className="text-lg font-semibold mb-3">Comidas de hoy</h2>
 
-                    <button className="w-full flex items-center justify-between bg-[#55A91D] text-white font-semibold py-3 px-4 rounded-xl shadow-md">
+                    <button onClick={handleClick} className="w-full flex items-center justify-between bg-[#55A91D] text-white font-semibold py-3 px-4 rounded-xl shadow-md">
                         Añadir comidas
                         <span className="text-2xl"><Plus /></span>
                     </button>
