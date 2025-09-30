@@ -71,6 +71,7 @@ export default function ExercisesMain() {
 
             <ActivityTracker data={activityData} />
 
+            <h1 className="text-xl font-bold mb-4 px-4 text-white">Progreso semanal</h1>
             <WeeklyProgress weekData={weekData} />
 
             <ProgressBar {...progressData} />
