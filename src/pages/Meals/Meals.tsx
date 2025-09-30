@@ -2,6 +2,7 @@ import { ChevronRight, Flame, Plus, RefreshCcw } from "lucide-react";
 import Header from "../../components/common/Header/Header";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
+import BottomNavigation from "../../components/common/Navigation/BottomNavigation";
 
 const Meals: React.FC = () => {
     const navigate = useNavigate();
@@ -31,6 +32,18 @@ const Meals: React.FC = () => {
 
     function handleProfile(): void {
         navigate("/profile");
+    }
+
+    function onNavigateExercises(): void {
+        throw new Error("Function not implemented.");
+    }
+
+    function onNavigateHome(): void {
+        throw new Error("Function not implemented.");
+    }
+
+    function onNavigateNutrition(): void {
+        throw new Error("Function not implemented.");
     }
 
     return (
@@ -101,6 +114,11 @@ const Meals: React.FC = () => {
                     ))}
                 </div>
             </div>
+            <BottomNavigation
+                onNavigateExercises={onNavigateExercises}
+                onNavigateHome={onNavigateHome}
+                onNavigateNutrition={onNavigateNutrition}
+            />
         </div>
     );
 };
