@@ -1,8 +1,9 @@
-import { ChevronRight, Flame, Plus, RefreshCcw } from "lucide-react";
+import { ChevronRight, Flame, HandPlatter, Plus, X } from "lucide-react";
 import Header from "../../components/common/Header/Header";
 import { useNavigate } from "react-router-dom";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import BottomNavigation from "../../components/common/Navigation/BottomNavigation";
+import { useState } from "react";
 
 const Meals: React.FC = () => {
     const navigate = useNavigate();
@@ -18,17 +19,29 @@ const Meals: React.FC = () => {
     const recommendations = [
         {
             title: "Ensalada de verduras",
-            img: "https://www.recetasnestle.com.mx/sites/default/files/srh_recipes/a66e2d26e98cb65d8be4eb89e48ff8d6.jpg"
+            img: "https://www.recetasnestle.com.mx/sites/default/files/srh_recipes/a66e2d26e98cb65d8be4eb89e48ff8d6.jpg",
+            grams: "150g",
+            kcal: 120,
+            desc: "Una ensalada fresca y ligera, rica en fibra, vitaminas y minerales."
         },
         {
             title: "Huevos hervidos",
-            img: "https://cocina-casera.com/wp-content/uploads/2023/01/como-cocer-huevo-cocido-770x485.jpg"
+            img: "https://cocina-casera.com/wp-content/uploads/2023/01/como-cocer-huevo-cocido-770x485.jpg",
+            grams: "100g",
+            kcal: 155,
+            desc: "Huevos cocidos que aportan proteína de alta calidad y grasas saludables."
         },
         {
             title: "Calabacitas",
-            img: "https://www.muydelish.com/wp-content/uploads/2020/02/calabacitas.jpg"
+            img: "https://www.muydelish.com/wp-content/uploads/2020/02/calabacitas.jpg",
+            grams: "120g",
+            kcal: 90,
+            desc: "Calabacitas al vapor, bajas en calorías y ricas en antioxidantes."
         }
     ];
+
+    const [selectedMeal, setSelectedMeal] = useState<any>(null);
+    const [quantity, setQuantity] = useState(1);
 
     function handleProfile(): void {
         navigate("/profile");
@@ -47,7 +60,11 @@ const Meals: React.FC = () => {
     }
 
     const handleClick = () => {
-        navigate("/meals-select"); // Aquí defines la ruta a la que quieres ir
+        navigate("/meals-select");
+    };
+
+    const handleClick2 = () => {
+        navigate("/meals-historial");
     };
 
     return (
@@ -62,7 +79,7 @@ const Meals: React.FC = () => {
             />
 
             <div className="p-11 space-y-8">
-                <button className="w-full flex items-center justify-between bg-[#55A91D] text-white font-semibold py-3 px-4 rounded-xl shadow-md">
+                <button onClick={handleClick2} className="w-full flex items-center justify-between bg-[#55A91D] text-white font-semibold py-3 px-4 rounded-xl shadow-md">
                     Ver historial de comidas
                     <span className="text-2xl"><ChevronRight /></span>
                 </button>
@@ -103,7 +120,8 @@ const Meals: React.FC = () => {
                     {recommendations.map((item, index) => (
                         <div
                             key={index}
-                            className="relative rounded-xl overflow-hidden shadow-md"
+                            onClick={() => { setSelectedMeal(item); setQuantity(1); }}
+                            className="relative rounded-xl overflow-hidden shadow-md cursor-pointer"
                         >
                             <img
                                 src={item.img}
@@ -118,6 +136,65 @@ const Meals: React.FC = () => {
                     ))}
                 </div>
             </div>
+
+            <AnimatePresence>
+                {selectedMeal && (
+                    <motion.div
+                        className="fixed inset-0 bg-black/80 flex items-center justify-center p-5 z-50"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                    >
+                        <motion.div
+                            className="bg-[#2A2A2A] rounded-3xl p-9 w-full max-w-md text-white relative"
+                            initial={{ y: 100, opacity: 0 }}
+                            animate={{ y: 0, opacity: 1 }}
+                            exit={{ y: 100, opacity: 0 }}
+                        >
+                            <button
+                                onClick={() => setSelectedMeal(null)}
+                                className="absolute top-6 right-5 text-gray-300 hover:text-white"
+                            >
+                                <X />
+                            </button>
+
+                            <div className="flex items-center gap-3 mb-4">
+                                <HandPlatter className="text-white" />
+                                <h2 className="text-xl font-semibold">{selectedMeal.title}</h2>
+                            </div>
+
+                            <div className="flex justify-between items-center text-gray-300 mb-3">
+                                <span>{selectedMeal.grams}</span>
+                                <span>{selectedMeal.kcal} kcal</span>
+                            </div>
+
+                            <p className="text-sm text-gray-400 mb-5">{selectedMeal.desc}</p>
+
+                            <div className="flex flex-wrap gap-2 mb-4 w-full">
+                                <button className="bg-green-600 py-2 px-10 rounded-xl font-semibold flex-1 min-w-[120px]">
+                                    Añadir
+                                </button>
+                                <div className="flex items-center gap-3 flex-1 min-w-[120px] justify-center">
+                                    <button
+                                        onClick={() => setQuantity((q) => Math.max(1, q - 1))}
+                                        className="bg-[#444] px-3 py-1 rounded-lg"
+                                    >
+                                        -
+                                    </button>
+                                    <span className="text-lg font-semibold">{quantity}</span>
+                                    <button
+                                        onClick={() => setQuantity((q) => q + 1)}
+                                        className="bg-[#55A91D] px-3 py-1 rounded-lg"
+                                    >
+                                        +
+                                    </button>
+                                </div>
+                            </div>
+                        </motion.div>
+                    </motion.div>
+                )}
+            </AnimatePresence>
+
             <BottomNavigation
                 onNavigateExercises={onNavigateExercises}
                 onNavigateHome={onNavigateHome}
