@@ -12,6 +12,7 @@ interface ExerciseOption {
   imageUrl: string
 }
 
+
 // Props del componente
 interface ExerciseSelectionProps {
   onBack?: () => void

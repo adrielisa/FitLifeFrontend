@@ -10,6 +10,10 @@ import Home from "./pages/Home/Home";
 import WorkoutPlan from "./pages/Exercises/WorkoutPlan";
 import ExerciseDetail from "./pages/Exercises/ExerciseDetails";
 import ExerciseInformation from "./pages/Exercises/ExerciseInformation";
+import Meals from "./pages/Meals/Meals";
+import MealsSelect from "./pages/Meals/MealsSelect";
+import ExerciseCardio from "./pages/Exercises/ExerciseCardio";
+import MealsHistorial from "./pages/Meals/MealsHistorial";
 /* import LandingPage from "./pages/LandingPage/LadingPage"; */
 
 function App(): React.JSX.Element {
@@ -27,6 +31,10 @@ function App(): React.JSX.Element {
         <Route path="/workoutPlan" element={<WorkoutPlan />} />
         <Route path="/exercise-detail" element={<ExerciseDetail />} />
         <Route path="/exerciseInfo" element={<ExerciseInformation />} />
+        <Route path="/meals" element={<Meals />} />
+        <Route path="/meals-select" element={<MealsSelect />} />
+        <Route path="/exerciseCardio" element={<ExerciseCardio />} />
+        <Route path="/meals-historial" element={<MealsHistorial />} />
         {/*<Route path="/" element={<LandingPage />} /> */}
 
         {/* Otras rutas con header y layout */}
@@ -51,6 +59,9 @@ function App(): React.JSX.Element {
                       <Link to="/exerciseInfo" className="text-gray-600 hover:text-gray-900">
                         Info
                       </Link>
+                      <Link to="/exerciseCardio" className="text-gray-600 hover:text-gray-900">
+                        Cardio
+                      </Link>
                       <Link to="/nutrition" className="text-gray-600 hover:text-gray-900">
                         Nutrition
                       </Link>
@@ -62,6 +73,9 @@ function App(): React.JSX.Element {
                       </Link>
                       <Link to="/profile" className="text-gray-600 hover:text-gray-900">
                         Profile
+                      </Link>
+                      <Link to="/meals" className="text-gray-600 hover:text-gray-900">
+                        Meals
                       </Link>
                     </nav>
                   </div>
