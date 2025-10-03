@@ -1,51 +1,105 @@
 import { useState } from "react"
 import { ChevronLeft } from "lucide-react"
 import { useNavigate } from "react-router-dom"
+import { userService, type RegisterUserDTO } from "../../services/api/userService"
 
 const Register: React.FC = () => {
     const navigate = useNavigate()
     
     // Estados para el primer formulario
-    const [nombre, setNombre] = useState("");
-    const [correo, setCorreo] = useState("");
-    const [contrasena, setContrasena] = useState("");
-    const [confirmarContrasena, setConfirmarContrasena] = useState("");
+    const [nombre, setNombre] = useState("")
+    const [correo, setCorreo] = useState("")
+    const [contrasena, setContrasena] = useState("")
+    const [confirmarContrasena, setConfirmarContrasena] = useState("")
     
     // Estados para el segundo formulario
-    const [edad, setEdad] = useState("");
-    const [peso, setPeso] = useState("");
-    const [estatura, setEstatura] = useState("");
-    const [nivelActividad, setNivelActividad] = useState("Bajo/Medio/Alto");
-    const [meta, setMeta] = useState("");
+    const [edad, setEdad] = useState("")
+    const [peso, setPeso] = useState("")
+    const [estatura, setEstatura] = useState("")
+    const [nivelActividad, setNivelActividad] = useState("Bajo/Medio/Alto")
+    const [meta, setMeta] = useState("")
     
     // Estado para controlar qué paso mostrar
-    const [currentStep, setCurrentStep] = useState(1);
+    const [currentStep, setCurrentStep] = useState(1)
+    
+    // Estado de carga
+    const [isLoading, setIsLoading] = useState(false)
 
     const handleSiguiente = (e: React.FormEvent) => {
-        e.preventDefault();
+        e.preventDefault()
         if (!nombre || !correo || !contrasena || !confirmarContrasena) {
-            alert("Por favor completa todos los campos");
-            return;
+            alert("Por favor completa todos los campos")
+            return
         }
         if (contrasena !== confirmarContrasena) {
-            alert("Las contraseñas no coinciden");
-            return;
+            alert("Las contraseñas no coinciden")
+            return
         }
-        setCurrentStep(2);
-    };
+        setCurrentStep(2)
+    }
 
-    const handleConfirmar = (e: React.FormEvent) => {
-        e.preventDefault();
+    const handleConfirmar = async (e: React.FormEvent) => {
+        e.preventDefault()
+        
         if (!edad || !peso || !estatura || !meta || nivelActividad === "Bajo/Medio/Alto") {
-            alert("Por favor completa todos los campos");
-            return;
+            alert("Por favor completa todos los campos")
+            return
         }
-        navigate('/login');
-    };
+
+        setIsLoading(true)
+
+        try {
+            // Mapear los valores del formulario al formato de la API
+            const userData: RegisterUserDTO = {
+                name: nombre,
+                email: correo,
+                password: contrasena,
+                age: parseInt(edad),
+                weight: parseFloat(peso),
+                height: parseFloat(estatura),
+                fitness_goal: mapFitnessGoal(meta),
+                activity_level: mapActivityLevel(nivelActividad),
+            }
+
+            // Llamar al servicio para registrar usuario
+            const response = await userService.register(userData)
+            
+            alert(`¡Registro exitoso! Bienvenido ${response.user.name}`)
+            
+            // Redirigir a home después de registro exitoso
+            navigate('/home')
+        } catch (error: any) {
+            console.error('Error en registro:', error)
+            const errorMessage = error.response?.data?.message || error.response?.data?.error || 'Error al registrar usuario'
+            alert(errorMessage)
+        } finally {
+            setIsLoading(false)
+        }
+    }
+
+    // Funciones auxiliares para mapear valores del formulario a la API
+    const mapFitnessGoal = (goal: string): RegisterUserDTO['fitness_goal'] => {
+        const goalMap: Record<string, RegisterUserDTO['fitness_goal']> = {
+            'Perder peso': 'perder_peso',
+            'Mantener peso': 'mantener_peso',
+            'Ganar peso': 'ganar_peso',
+            'Ganar músculo': 'ganar_musculo',
+        }
+        return goalMap[goal] || 'mantener_peso'
+    }
+
+    const mapActivityLevel = (level: string): RegisterUserDTO['activity_level'] => {
+        const levelMap: Record<string, RegisterUserDTO['activity_level']> = {
+            'Bajo': 'bajo',
+            'Medio': 'moderado',
+            'Alto': 'alto',
+        }
+        return levelMap[level] || 'moderado'
+    }
 
     const handleVolver = () => {
-        setCurrentStep(1);
-    };
+        setCurrentStep(1)
+    }
 
     return (
         <div
@@ -64,6 +118,7 @@ const Register: React.FC = () => {
                         <button
                             onClick={handleVolver}
                             className="absolute left-0 text-white hover:text-gray-300 transition-colors"
+                            disabled={isLoading}
                         >
                             <ChevronLeft className="w-6 h-6" />
                         </button>
@@ -153,7 +208,7 @@ const Register: React.FC = () => {
                             />
                         </div>
                         <div className="mb-4">
-                            <label className="block text-white text-sm mb-1">Peso</label>
+                            <label className="block text-white text-sm mb-1">Peso (kg)</label>
                             <input
                                 type="number"
                                 value={peso}
@@ -164,7 +219,7 @@ const Register: React.FC = () => {
                             />
                         </div>
                         <div className="mb-4">
-                            <label className="block text-white text-sm mb-1">Estatura</label>
+                            <label className="block text-white text-sm mb-1">Estatura (cm)</label>
                             <input
                                 type="number"
                                 value={estatura}
@@ -175,7 +230,7 @@ const Register: React.FC = () => {
                             />
                         </div>
                         <div className="mb-4">
-                            <label className="block text-white text-sm mb-1">Nivel de act: (Bajo/Medio/Alto)</label>
+                            <label className="block text-white text-sm mb-1">Nivel de actividad</label>
                             <select
                                 value={nivelActividad}
                                 onChange={(e) => setNivelActividad(e.target.value)}
@@ -189,7 +244,7 @@ const Register: React.FC = () => {
                             </select>
                         </div>
                         <div className="mb-6">
-                            <label className="block text-white text-sm mb-1">Meta:</label>
+                            <label className="block text-white text-sm mb-1">Meta</label>
                             <select
                                 value={meta}
                                 onChange={(e) => setMeta(e.target.value)}
@@ -206,15 +261,16 @@ const Register: React.FC = () => {
                         <button
                             type="button"
                             onClick={handleConfirmar}
-                            className="w-full bg-[#55A91D] hover:bg-[#4a8f1a] text-white font-bold py-3 rounded-md transition-colors touch-manipulation"
+                            disabled={isLoading}
+                            className="w-full bg-[#55A91D] hover:bg-[#4a8f1a] disabled:bg-gray-500 disabled:cursor-not-allowed text-white font-bold py-3 rounded-md transition-colors touch-manipulation"
                         >
-                            Confirmar
+                            {isLoading ? 'Registrando...' : 'Confirmar'}
                         </button>
                     </div>
                 )}
             </div>
         </div>
-    );
-};
+    )
+}
 
-export default Register;
+export default Register
