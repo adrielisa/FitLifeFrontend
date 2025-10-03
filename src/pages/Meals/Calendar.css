@@ -1,0 +1,53 @@
+.react-calendar {
+    background-color: #272727;
+    border-radius: 20px;
+    padding: 10px;
+    border: none;
+    color: white;
+    font-family: sans-serif;
+}
+
+.react-calendar__tile {
+    background: transparent;
+    border-radius: 8px;
+    padding: 10px;
+    color: #fff;
+    transition: 0.2s;
+}
+
+.react-calendar__tile:hover {
+    background: #333;
+}
+
+/* Día seleccionado */
+.react-calendar__tile--active {
+    background: #55A91D;
+    color: #ffffff;
+    font-weight: bold;
+}
+
+/* Día de hoy */
+.react-calendar__tile--now {
+    background: #DC6802;
+    color: white;
+    border-radius: 12px;
+}
+
+.react-calendar__navigation {
+    display: flex;
+    justify-content: space-between;
+    margin: 18px;
+}
+
+.react-calendar__navigation button {
+    color: #ffffff;
+    background: none;
+    border: none;
+    font-size: 1.1rem;
+}
+
+.react-calendar__month-view__weekdays {
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    color: #ffffffb4;
+}
