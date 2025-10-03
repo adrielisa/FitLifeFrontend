@@ -19,6 +19,29 @@ export default function ExercisesMain() {
     // Obtener userId del localStorage
     const userId = getUserId() || '';
 
+    // Helper function to get current week key
+    const getCurrentWeekKey = () => {
+        const now = new Date();
+        const startOfWeek = new Date(now.setDate(now.getDate() - now.getDay() + 1)); // Monday
+        return `week-${startOfWeek.toISOString().split('T')[0]}`;
+    };
+
+    // Get fixed total sessions from localStorage or initialize it
+    const getFixedTotalSessions = (): number => {
+        const weekKey = getCurrentWeekKey();
+        const stored = localStorage.getItem(`totalSessions-${weekKey}`);
+        if (stored) {
+            return parseInt(stored, 10);
+        }
+        // If not stored and we have weeklyStats, use its initial value
+        if (weeklyStats?.totalSessions) {
+            const total = weeklyStats.totalSessions;
+            localStorage.setItem(`totalSessions-${weekKey}`, total.toString());
+            return total;
+        }
+        return 0;
+    };
+
     useEffect(() => {
         if (!userId) {
             navigate('/login');
@@ -26,6 +49,19 @@ export default function ExercisesMain() {
         }
         loadData();
     }, [userId]);
+
+    // Effect to store initial totalSessions when weeklyStats first loads
+    useEffect(() => {
+        if (weeklyStats?.totalSessions) {
+            const weekKey = getCurrentWeekKey();
+            const storedTotal = localStorage.getItem(`totalSessions-${weekKey}`);
+            
+            // Only store if not already stored for this week
+            if (!storedTotal) {
+                localStorage.setItem(`totalSessions-${weekKey}`, weeklyStats.totalSessions.toString());
+            }
+        }
+    }, [weeklyStats]);
 
     const loadData = async () => {
         try {
@@ -93,13 +129,17 @@ export default function ExercisesMain() {
     const weekData = getWeekData();
 
     // Calcular progreso del entrenamiento
+    // Usar el total de sesiones fijo almacenado para la semana actual
+    const fixedTotalSessions = getFixedTotalSessions();
+    const completedSessions = weeklyStats?.completedSessions || 0;
+    
     const progressData = {
-        percentage: weeklyStats?.completedSessions && weeklyStats?.totalSessions 
-            ? Math.round((weeklyStats.completedSessions / weeklyStats.totalSessions) * 100)
+        percentage: fixedTotalSessions > 0
+            ? Math.round((completedSessions / fixedTotalSessions) * 100)
             : 0,
         sessions: { 
-            completed: weeklyStats?.completedSessions || 0, 
-            total: weeklyStats?.totalSessions || 0 
+            completed: completedSessions, 
+            total: fixedTotalSessions 
         },
         consecutiveWeeks: 2 // Esto lo puedes calcular más adelante
     };
