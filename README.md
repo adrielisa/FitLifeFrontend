@@ -245,9 +245,3 @@ Los servicios de API están ubicados en `src/services/api/`. Cada archivo de ser
 
 Este frontend está diseñado para trabajar con una API backend separada. Actualiza los endpoints de la API en `src/services/api/endpoints.js` para que coincidan con la URL de tu backend.
 
-## 🤝 Contribuyendo
-
-1. Crea una nueva rama para tu característica
-2. Realiza tus cambios
-3. Prueba tus cambios
-4. Envía un pull request
