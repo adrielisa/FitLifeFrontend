@@ -1,0 +1,129 @@
+/**
+ * WearableConnectorFactory
+ * 
+ * Factory que crea e inyecta adaptadores de wearables
+ * Centraliza la creación de adaptadores según el tipo de dispositivo
+ */
+
+import type { IWearableConnector } from './adapters/IWearableConnector';
+import { GarminAdapter } from './adapters/GarminAdapter';
+import { AppleWatchAdapter } from './adapters/AppleWatchAdapter';
+
+export enum WearableDeviceType {
+    GARMIN = 'garmin',
+    APPLE_WATCH = 'apple_watch',
+    FITBIT = 'fitbit',
+    SAMSUNG_GALAXY_WATCH = 'samsung_galaxy_watch',
+}
+
+export interface WearableConfig {
+    type: WearableDeviceType;
+    userId: string;
+    apiKey?: string;
+    apiSecret?: string;
+    authToken?: string;
+}
+
+/**
+ * Factory para crear adaptadores de wearables
+ * Sigue el patrón Factory Method de GoF
+ */
+export class WearableConnectorFactory {
+    private static connectors: Map<string, IWearableConnector> = new Map();
+
+    /**
+     * Crea o reutiliza un conector para un dispositivo wearable
+     * @param config Configuración del dispositivo
+     * @returns Instancia del adaptador apropiado
+     */
+    static createConnector(config: WearableConfig): IWearableConnector {
+        const key = `${config.type}-${config.userId}`;
+
+        // Reutilizar si ya existe
+        if (this.connectors.has(key)) {
+            return this.connectors.get(key)!;
+        }
+
+        let connector: IWearableConnector;
+
+        switch (config.type) {
+            case WearableDeviceType.GARMIN:
+                connector = new GarminAdapter(
+                    config.apiKey || '',
+                    config.apiSecret || '',
+                    config.userId
+                );
+                break;
+
+            case WearableDeviceType.APPLE_WATCH:
+                connector = new AppleWatchAdapter(config.userId);
+                break;
+
+            case WearableDeviceType.FITBIT:
+                // Implementar cuando sea necesario
+                throw new Error('Fitbit adapter no implementado aún');
+
+            case WearableDeviceType.SAMSUNG_GALAXY_WATCH:
+                // Implementar cuando sea necesario
+                throw new Error('Samsung Galaxy Watch adapter no implementado aún');
+
+            default:
+                throw new Error(`Tipo de dispositivo desconocido: ${config.type}`);
+        }
+
+        // Guardar para reutilización
+        this.connectors.set(key, connector);
+
+        return connector;
+    }
+
+    /**
+     * Obtiene un conector previamente creado
+     */
+    static getConnector(type: WearableDeviceType, userId: string): IWearableConnector | undefined {
+        const key = `${type}-${userId}`;
+        return this.connectors.get(key);
+    }
+
+    /**
+     * Elimina un conector y desconecta el dispositivo
+     */
+    static async removeConnector(type: WearableDeviceType, userId: string): Promise<void> {
+        const key = `${type}-${userId}`;
+        const connector = this.connectors.get(key);
+
+        if (connector) {
+            await connector.disconnect();
+            this.connectors.delete(key);
+        }
+    }
+
+    /**
+     * Lista todos los dispositivos conectados
+     */
+    static listConnectedDevices(): Array<{ type: WearableDeviceType; userId: string }> {
+        const devices: Array<{ type: WearableDeviceType; userId: string }> = [];
+
+        this.connectors.forEach((_, key) => {
+            const [typeStr, userId] = key.split('-');
+            devices.push({
+                type: typeStr as WearableDeviceType,
+                userId,
+            });
+        });
+
+        return devices;
+    }
+
+    /**
+     * Desconecta todos los dispositivos
+     */
+    static async disconnectAll(): Promise<void> {
+        const promises = Array.from(this.connectors.values()).map(connector =>
+            connector.disconnect()
+        );
+
+        await Promise.all(promises);
+        this.connectors.clear();
+    }
+}
