@@ -1,16 +1,3 @@
-/**
- * CQRS: Queries (Lectura)
- * 
- * Las queries representan peticiones de lectura de datos
- * Patrón: Query Object Pattern
- * 
- * Características:
- * - NO contienen lógica de negocio
- * - Retornan DTOs optimizados para lectura
- * - Pueden cachear resultados
- * - Pueden leer de réplicas o caches
- */
-
 import type {
     UserProfileDTO,
     UserHealthMetricsDTO,
@@ -23,15 +10,8 @@ import type {
 } from '../DTOs';
 
 export interface IQuery<TResult> {
-    /**
-     * Ejecuta la query y retorna el resultado
-     */
     execute(): Promise<TResult>;
 }
-
-/**
- * ==================== USER QUERIES ====================
- */
 
 export class GetUserProfileQuery implements IQuery<UserProfileDTO | null> {
     constructor(private userId: string, private userRepository: any) {}
@@ -48,10 +28,6 @@ export class GetUserHealthMetricsQuery implements IQuery<UserHealthMetricsDTO | 
         return await this.userRepository.getHealthMetrics(this.userId);
     }
 }
-
-/**
- * ==================== WORKOUT QUERIES ====================
- */
 
 export class GetWorkoutProgressQuery implements IQuery<WorkoutProgressDTO | null> {
     constructor(private userId: string, private workoutRepository: any) {}
@@ -77,10 +53,6 @@ export class GetUserWorkoutsQuery implements IQuery<any[]> {
         );
     }
 }
-
-/**
- * ==================== NUTRITION QUERIES ====================
- */
 
 export class GetDailyNutritionQuery implements IQuery<DailyNutritionDTO | null> {
     constructor(private userId: string, private date: Date, private mealRepository: any) {}
@@ -119,10 +91,6 @@ export class GetMealHistoryQuery implements IQuery<any[]> {
     }
 }
 
-/**
- * ==================== GOAL QUERIES ====================
- */
-
 export class GetActiveGoalsQuery implements IQuery<GoalDTO[]> {
     constructor(private userId: string, private goalRepository: any) {}
 
@@ -147,10 +115,6 @@ export class GetGoalProgressQuery implements IQuery<any | null> {
     }
 }
 
-/**
- * ==================== ACHIEVEMENT QUERIES ====================
- */
-
 export class GetUserAchievementsQuery implements IQuery<AchievementDTO[]> {
     constructor(private userId: string, private achievementRepository: any) {}
 
@@ -166,10 +130,6 @@ export class GetRecentAchievementsQuery implements IQuery<AchievementDTO[]> {
         return await this.achievementRepository.getRecentAchievements(this.userId, this.count);
     }
 }
-
-/**
- * ==================== STATISTICS QUERIES ====================
- */
 
 export class GetUserStatsQuery implements IQuery<StatsDTO | null> {
     constructor(private userId: string, private statsRepository: any) {}
@@ -206,17 +166,10 @@ export class GetWeekSummaryQuery implements IQuery<any | null> {
     }
 }
 
-/**
- * ==================== QUERY BUS ====================
- */
-
 export class QueryBus {
     private cache: Map<string, { result: any; timestamp: number }> = new Map();
     private cacheTTL = 5 * 60 * 1000; // 5 minutos por defecto
 
-    /**
-     * Ejecuta una query con caching opcional
-     */
     async execute<TResult>(query: IQuery<TResult>, cacheKey?: string): Promise<TResult> {
         // Verificar cache
         if (cacheKey) {
@@ -249,25 +202,16 @@ export class QueryBus {
         }
     }
 
-    /**
-     * Invalida una entrada del cache
-     */
     invalidateCache(cacheKey: string): void {
         this.cache.delete(cacheKey);
         console.log(`[QueryBus] Cache invalidado: ${cacheKey}`);
     }
 
-    /**
-     * Invalida todas las entradas del cache
-     */
     clearCache(): void {
         this.cache.clear();
         console.log('[QueryBus] Cache limpiado completamente');
     }
 
-    /**
-     * Configura el TTL del cache
-     */
     setCacheTTL(ttlMs: number): void {
         this.cacheTTL = ttlMs;
     }
