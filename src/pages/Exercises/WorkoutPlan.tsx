@@ -32,7 +32,7 @@ export default function WorkoutPlan() {
     };
 
     return (
-        <div className="min-h-screen bg-[#2d2d2d] pb-20">
+        <div className="min-h-screen bg-[#1A1A1A] text-white p-10 space-y-10">
             <Header
                 isActive={true}
                 showBackButton={true}
