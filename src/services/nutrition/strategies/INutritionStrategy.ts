@@ -1,10 +1,3 @@
-/**
- * Interface que define el contrato para estrategias de nutrición
- * Implementa el patrón Strategy de GoF
- * 
- * Permite cambiar dinámicamente la estrategia de nutrición sin modificar el código cliente
- */
-
 export interface NutrientRecommendation {
     macronutrients: {
         proteins: number;      // en gramos
@@ -38,33 +31,12 @@ export interface UserProfile {
     healthConditions?: string[]; // diabetes, hipertensión, etc.
 }
 
-/**
- * Interface principal que define el contrato para todas las estrategias de nutrición
- */
 export interface INutritionStrategy {
-    /**
-     * Nombre descriptivo de la estrategia
-     */
     getName(): string;
-
-    /**
-     * Descripción de la estrategia
-     */
     getDescription(): string;
 
-    /**
-     * Calcula las recomendaciones nutricionales basadas en el perfil del usuario
-     * @param userProfile Perfil del usuario
-     * @returns Recomendaciones nutricionales personalizadas
-     */
     calculateNutrientRecommendations(userProfile: UserProfile): NutrientRecommendation;
 
-    /**
-     * Sugiere comidas según la estrategia
-     * @param calorias Cantidad de calorías disponibles
-     * @param preferences Preferencias del usuario (alimentos favoritos, alergias, etc)
-     * @returns Lista de comidas recomendadas
-     */
     suggestMeals(
         calories: number,
         preferences?: {
@@ -74,17 +46,7 @@ export interface INutritionStrategy {
         }
     ): MealSuggestion[];
 
-    /**
-     * Valida si una comida es compatible con esta estrategia
-     * @param meal Comida a validar
-     * @returns true si la comida es compatible, false en caso contrario
-     */
     isCompatibleMeal(meal: Meal): boolean;
-
-    /**
-     * Proporciona educación sobre la estrategia
-     * @returns Información sobre beneficios, desventajas y cómo seguir la estrategia
-     */
     getEducationalContent(): EducationalContent;
 }
 
