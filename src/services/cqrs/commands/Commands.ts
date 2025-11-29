@@ -1,33 +1,7 @@
-/**
- * CQRS: Commands (Escritura)
- * 
- * Los comandos representan acciones que modifican el estado de la aplicación
- * Patrón: Command Pattern de GoF + CQRS
- * 
- * Responsabilidades:
- * - Encapsular una acción específica
- * - Pasar por validaciones y reglas de negocio
- * - Persistir cambios a través de DAOs
- * - Emitir eventos de dominio
- */
-
 export interface ICommand {
-    /**
-     * Ejecuta el comando
-     * @returns Promise con el resultado o ID del recurso creado/modificado
-     */
     execute(): Promise<any>;
-
-    /**
-     * Valida el comando antes de ejecutar
-     * @throws Error si la validación falla
-     */
     validate(): void;
 }
-
-/**
- * ==================== WORKOUT COMMANDS ====================
- */
 
 export class RegisterWorkoutCommand implements ICommand {
     constructor(
@@ -103,10 +77,6 @@ export class RegisterWorkoutCommand implements ICommand {
     }
 }
 
-/**
- * ==================== NUTRITION COMMANDS ====================
- */
-
 export class RegisterMealCommand implements ICommand {
     constructor(
         private userId: string,
@@ -154,10 +124,6 @@ export class RegisterMealCommand implements ICommand {
         return mealId;
     }
 }
-
-/**
- * ==================== GOAL COMMANDS ====================
- */
 
 export class CreateGoalCommand implements ICommand {
     constructor(
@@ -227,10 +193,6 @@ export class UpdateGoalProgressCommand implements ICommand {
     }
 }
 
-/**
- * ==================== USER COMMANDS ====================
- */
-
 export class UpdateUserHealthMetricsCommand implements ICommand {
     constructor(
         private userId: string,
@@ -267,23 +229,13 @@ export class UpdateUserHealthMetricsCommand implements ICommand {
     }
 }
 
-/**
- * ==================== COMMAND BUS ====================
- */
-
 export class CommandBus {
     private handlers: Map<string, (command: ICommand) => Promise<any>> = new Map();
 
-    /**
-     * Registra un handler para un tipo de comando
-     */
     registerHandler(commandType: string, handler: (command: ICommand) => Promise<any>): void {
         this.handlers.set(commandType, handler);
     }
 
-    /**
-     * Ejecuta un comando a través del bus
-     */
     async execute(command: ICommand): Promise<any> {
         const commandName = command.constructor.name;
         const handler = this.handlers.get(commandName);
