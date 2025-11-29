@@ -1,16 +1,3 @@
-/**
- * NutritionStrategyManager
- * 
- * Implementación del patrón Strategy para gestionar diferentes estrategias de nutrición
- * Permite cambiar dinámicamente entre diferentes enfoques nutricionales
- * 
- * Responsabilidades:
- * - Registrar estrategias disponibles
- * - Cambiar la estrategia activa en tiempo de ejecución
- * - Delegar operaciones a la estrategia activa
- * - Validar compatibilidad de comidas
- */
-
 import type {
     INutritionStrategy,
     NutrientRecommendation,
@@ -32,29 +19,16 @@ export class NutritionStrategyManager {
         this.activeStrategy = this.strategies.get(defaultStrategy) || new BalancedStrategy();
     }
 
-    /**
-     * Registra las estrategias por defecto
-     */
     private registerDefaultStrategies(): void {
         this.registerStrategy('keto', new KetoStrategy());
         this.registerStrategy('vegan', new VeganStrategy());
         this.registerStrategy('balanced', new BalancedStrategy());
     }
 
-    /**
-     * Registra una nueva estrategia personalizada
-     * @param name Identificador único de la estrategia
-     * @param strategy Implementación de INutritionStrategy
-     */
     registerStrategy(name: string, strategy: INutritionStrategy): void {
         this.strategies.set(name.toLowerCase(), strategy);
     }
 
-    /**
-     * Cambia la estrategia activa
-     * @param strategyName Nombre de la estrategia a usar
-     * @throws Error si la estrategia no existe
-     */
     switchStrategy(strategyName: string): void {
         const strategy = this.strategies.get(strategyName.toLowerCase());
         if (!strategy) {
@@ -65,23 +39,14 @@ export class NutritionStrategyManager {
         this.activeStrategy = strategy;
     }
 
-    /**
-     * Obtiene la estrategia activa actual
-     */
     getActiveStrategy(): INutritionStrategy {
         return this.activeStrategy;
     }
 
-    /**
-     * Obtiene el nombre de la estrategia activa
-     */
     getActiveStrategyName(): string {
         return this.activeStrategy.getName();
     }
 
-    /**
-     * Lista todas las estrategias disponibles
-     */
     listAvailableStrategies(): { name: string; description: string }[] {
         return Array.from(this.strategies.values()).map(strategy => ({
             name: strategy.getName(),
@@ -89,16 +54,10 @@ export class NutritionStrategyManager {
         }));
     }
 
-    /**
-     * Calcula recomendaciones nutricionales usando la estrategia activa
-     */
     calculateNutrientRecommendations(userProfile: UserProfile): NutrientRecommendation {
         return this.activeStrategy.calculateNutrientRecommendations(userProfile);
     }
 
-    /**
-     * Sugiere comidas usando la estrategia activa
-     */
     suggestMeals(
         calories: number,
         preferences?: {
@@ -110,31 +69,18 @@ export class NutritionStrategyManager {
         return this.activeStrategy.suggestMeals(calories, preferences);
     }
 
-    /**
-     * Valida si una comida es compatible con la estrategia activa
-     */
     isCompatibleMeal(meal: Meal): boolean {
         return this.activeStrategy.isCompatibleMeal(meal);
     }
 
-    /**
-     * Obtiene contenido educacional de la estrategia activa
-     */
     getEducationalContent() {
         return this.activeStrategy.getEducationalContent();
     }
 
-    /**
-     * Filtra comidas compatibles de una lista
-     */
     filterCompatibleMeals(meals: Meal[]): Meal[] {
         return meals.filter(meal => this.isCompatibleMeal(meal));
     }
 
-    /**
-     * Evalúa múltiples estrategias para un usuario específico
-     * Útil para comparar qué estrategia es mejor para el usuario
-     */
     evaluateAllStrategies(userProfile: UserProfile): Array<{
         strategyName: string;
         dailyCalories: number;
@@ -161,10 +107,6 @@ export class NutritionStrategyManager {
     }
 }
 
-/**
- * Factory para crear el NutritionStrategyManager
- * Permite inyección de dependencias y configuración centralizada
- */
 export class NutritionStrategyFactory {
     static createManager(
         defaultStrategy: 'keto' | 'vegan' | 'balanced' = 'balanced'
