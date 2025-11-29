@@ -1,10 +1,3 @@
-/**
- * Clase Achievement - Observable
- * 
- * Representa un logro desbloqueado por el usuario
- * Notifica a observadores cuando el logro es desbloqueado
- */
-
 import { Observable } from './Observable';
 import { EventType } from './IObserver';
 
@@ -42,9 +35,6 @@ export class Achievement extends Observable {
         this.data = { ...data };
     }
 
-    /**
-     * Desbloquea el logro y notifica a los observadores
-     */
     unlock(): void {
         if (!this.isNew) return; // Solo se puede desbloquear una vez
 
@@ -67,7 +57,6 @@ export class Achievement extends Observable {
             },
         });
 
-        // Notificar también si es un hito importante
         if (this.isImportantMilestone()) {
             this.notifyObservers({
                 type: EventType.ACHIEVEMENT_MILESTONE,
@@ -83,38 +72,23 @@ export class Achievement extends Observable {
         }
     }
 
-    /**
-     * Determina si es un hito importante
-     */
     private isImportantMilestone(): boolean {
         return ['rare', 'legendary'].includes(this.data.rarity);
     }
 
-    /**
-     * Obtiene los datos del logro
-     */
     getData(): AchievementData {
         return { ...this.data };
     }
 
-    /**
-     * Verifica si el logro fue desbloqueado recientemente (últimas 24 horas)
-     */
     isRecent(): boolean {
         const oneDayAgo = new Date(Date.now() - 24 * 60 * 60 * 1000);
         return this.data.unlockedAt >= oneDayAgo;
     }
 
-    /**
-     * Verifica si el logro es nuevo (recién creado pero no desbloqueado aún)
-     */
     isNewLocked(): boolean {
         return this.isNew;
     }
 
-    /**
-     * Obtiene una descripción visual del logro
-     */
     getFormattedDisplay(): string {
         const rarityEmojis = {
             common: '⚪',

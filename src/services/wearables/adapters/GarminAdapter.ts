@@ -1,9 +1,3 @@
-/**
- * Adaptador para Garmin Connect API
- * 
- * Adapta la API de Garmin al contrato definido en IWearableConnector
- */
-
 import type {
     IWearableConnector,
     ActivityData,
@@ -229,10 +223,6 @@ export class GarminAdapter implements IWearableConnector {
 
         return activities.length > 0 ? activities[activities.length - 1] : null;
     }
-
-    /**
-     * Métodos privados
-     */
 
     private async authenticate(): Promise<void> {
         // En producción, usaría OAuth 2.0 con Garmin

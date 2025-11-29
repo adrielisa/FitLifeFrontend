@@ -1,12 +1,3 @@
-/**
- * Estrategia de Nutrición: Dieta Vegana
- * 
- * Enfoque: 100% plantas, sin productos animales
- * Objetivo: Nutrición completa basada únicamente en alimentos vegetales
- * 
- * Considera: Balance de proteínas, B12, hierro, omega-3, calcio
- */
-
 import type {
     INutritionStrategy,
     NutrientRecommendation,

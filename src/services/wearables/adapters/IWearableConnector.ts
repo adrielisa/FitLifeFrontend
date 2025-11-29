@@ -1,15 +1,3 @@
-/**
- * IWearableConnector - Interface para Wearables
- * 
- * Patrón Adapter: Define un contrato común para conectarse a diferentes
- * dispositivos wearable (Garmin, Apple Watch, Fitbit, etc)
- * 
- * Ventajas:
- * - Desacopla la lógica de negocio de implementaciones específicas de wearables
- * - Permite agregar nuevos dispositivos sin modificar código existente
- * - Facilita testing con implementaciones mock
- */
-
 export interface ActivityData {
     date: Date;
     duration: number; // minutos
@@ -59,78 +47,18 @@ export enum ConnectionStatus {
     ERROR = 'error',
 }
 
-/**
- * Interface principal que todos los adaptadores deben implementar
- */
 export interface IWearableConnector {
-    /**
-     * Obtiene el estado actual de conexión
-     */
     getConnectionStatus(): ConnectionStatus;
-
-    /**
-     * Conecta con el dispositivo wearable
-     * @returns Promise que resuelve cuando está conectado
-     */
     connect(): Promise<void>;
-
-    /**
-     * Desconecta del dispositivo
-     */
     disconnect(): Promise<void>;
-
-    /**
-     * Obtiene información del dispositivo
-     */
     getDeviceInfo(): Promise<WearableDeviceInfo>;
-
-    /**
-     * Sincroniza datos del dispositivo
-     * @returns Promesa que resuelve cuando finaliza la sincronización
-     */
     syncData(): Promise<void>;
-
-    /**
-     * Obtiene datos de actividad (pasos, calorías, distancia, etc)
-     * @param startDate Fecha de inicio
-     * @param endDate Fecha de fin
-     */
     getActivityData(startDate: Date, endDate: Date): Promise<ActivityData[]>;
-
-    /**
-     * Obtiene datos de sueño
-     * @param startDate Fecha de inicio
-     * @param endDate Fecha de fin
-     */
     getSleepData(startDate: Date, endDate: Date): Promise<SleepData[]>;
-
-    /**
-     * Obtiene datos biométricos en tiempo real
-     */
     getBiometrics(): Promise<BiometricsData>;
-
-    /**
-     * Obtiene actividades de hoy
-     */
     getTodayActivity(): Promise<ActivityData | null>;
-
-    /**
-     * Obtiene promedio de pasos del día
-     */
     getDailyStepGoal(): Promise<number>;
-
-    /**
-     * Envía un comando al dispositivo (vibración, notificación, etc)
-     */
     sendCommand(command: string, params?: Record<string, any>): Promise<void>;
-
-    /**
-     * Revoca permisos y autentica de nuevo
-     */
     reauthorize(): Promise<void>;
-
-    /**
-     * Obtiene última actividad sincronizada
-     */
     getLastSyncedActivity(): Promise<ActivityData | null>;
 }

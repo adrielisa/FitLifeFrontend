@@ -1,9 +1,3 @@
-/**
- * Adaptador para Apple Watch / HealthKit API
- * 
- * Adapta la API de Apple HealthKit al contrato definido en IWearableConnector
- */
-
 import type {
     IWearableConnector,
     ActivityData,
@@ -187,10 +181,6 @@ export class AppleWatchAdapter implements IWearableConnector {
 
         return activities.length > 0 ? activities[activities.length - 1] : null;
     }
-
-    /**
-     * Métodos privados
-     */
 
     private async requestHealthKitPermissions(): Promise<void> {
         // En una app iOS real, esto mostraría el diálogo de permisos de HealthKit

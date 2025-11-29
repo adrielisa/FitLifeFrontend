@@ -1,13 +1,3 @@
-/**
- * StatsService - Observador concreto
- * 
- * Responsabilidades:
- * - Escucha eventos de logros y progreso
- * - Actualiza estadísticas del usuario
- * - Calcula métricas de rendimiento
- * - Mantiene historial de progreso
- */
-
 import type { IObserver, ObservableEvent } from './IObserver';
 import { EventType } from './IObserver';
 
@@ -51,9 +41,6 @@ export class StatsService implements IObserver {
         };
     }
 
-    /**
-     * Implementación de IObserver.update()
-     */
     update(event: ObservableEvent): void {
         switch (event.type) {
             case EventType.WORKOUT_COMPLETED:
@@ -85,9 +72,6 @@ export class StatsService implements IObserver {
         this.updateStreak(event.timestamp);
     }
 
-    /**
-     * Procesa un entrenamiento completado
-     */
     private handleWorkoutCompleted(data: Record<string, any>): void {
         this.stats.totalWorkoutsCompleted++;
         const duration = data.duration || 0;
@@ -104,9 +88,6 @@ export class StatsService implements IObserver {
         );
     }
 
-    /**
-     * Procesa una comida registrada
-     */
     private handleMealLogged(data: Record<string, any>): void {
         this.stats.totalMealsLogged++;
         this.stats.totalCaloriesConsumed += data.calories || 0;
@@ -116,27 +97,18 @@ export class StatsService implements IObserver {
         );
     }
 
-    /**
-     * Procesa un objetivo alcanzado
-     */
     private handleGoalAchieved(data: Record<string, any>): void {
         this.stats.goalsAchieved++;
 
         console.log(`[StatsService] Objetivo alcanzado: ${data.goalName}`);
     }
 
-    /**
-     * Procesa un logro desbloqueado
-     */
     private handleAchievementUnlocked(data: Record<string, any>): void {
         this.stats.totalAchievementsUnlocked++;
 
         console.log(`[StatsService] Logro desbloqueado: ${data.achievementName}`);
     }
 
-    /**
-     * Actualiza estadísticas manualmente
-     */
     private handleStatsUpdate(data: Record<string, any>): void {
         // Permitir actualizaciones manuales de cualquier campo
         Object.assign(this.stats, data);
@@ -144,9 +116,6 @@ export class StatsService implements IObserver {
         console.log('[StatsService] Estadísticas actualizadas manualmente');
     }
 
-    /**
-     * Añade un evento al historial de actividades
-     */
     private addToHistory(event: ObservableEvent): void {
         const history: ActivityHistory = {
             date: event.timestamp,
@@ -163,9 +132,6 @@ export class StatsService implements IObserver {
         }
     }
 
-    /**
-     * Mapea tipos de eventos a tipos de actividad
-     */
     private mapEventTypeToActivityType(
         eventType: EventType
     ): 'workout' | 'meal' | 'goal' | 'achievement' {
@@ -189,9 +155,6 @@ export class StatsService implements IObserver {
         }
     }
 
-    /**
-     * Actualiza la racha de días consecutivos
-     */
     private updateStreak(newActivityDate: Date): void {
         if (!this.stats.lastActivityDate) {
             this.stats.currentStreak = 1;
@@ -222,16 +185,10 @@ export class StatsService implements IObserver {
         this.stats.lastActivityDate = newActivityDate;
     }
 
-    /**
-     * Obtiene las estadísticas actuales
-     */
     getStats(): UserStats {
         return { ...this.stats };
     }
 
-    /**
-     * Obtiene el historial de actividades
-     */
     getActivityHistory(limit?: number): ActivityHistory[] {
         if (limit) {
             return this.activityHistory.slice(0, limit);
@@ -239,17 +196,10 @@ export class StatsService implements IObserver {
         return [...this.activityHistory];
     }
 
-    /**
-     * Calcula balance calórico (consumidas - quemadas)
-     */
     getCalorieBalance(): number {
         return this.stats.totalCaloriesConsumed - this.stats.totalCaloriesBurned;
     }
 
-    /**
-     * Obtiene progreso estimado (0-100)
-     * Basado en actividades completadas
-     */
     getOverallProgress(): number {
         // Fórmula simple: considera entrenamientos y metas
         const maxExpectedWorkouts = 30; // Meta mensual
@@ -262,9 +212,6 @@ export class StatsService implements IObserver {
         return Math.min(workoutProgress + goalsProgress, 100);
     }
 
-    /**
-     * Obtiene resumen estadístico semanal
-     */
     getWeeklySummary(): {
         workouts: number;
         caloriesBurned: number;
@@ -287,9 +234,6 @@ export class StatsService implements IObserver {
         };
     }
 
-    /**
-     * Resetea todas las estadísticas
-     */
     resetStats(): void {
         this.stats = {
             totalWorkoutsCompleted: 0,

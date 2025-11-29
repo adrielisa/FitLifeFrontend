@@ -1,10 +1,3 @@
-/**
- * Clase Goal - Observable
- * 
- * Representa un objetivo del usuario
- * Notifica a observadores cuando el objetivo cambia de estado
- */
-
 import { Observable } from './Observable';
 import { EventType } from './IObserver';
 
@@ -47,17 +40,11 @@ export class Goal extends Observable {
         this.data = { ...data };
     }
 
-    /**
-     * Obtiene el progreso del objetivo (0-100)
-     */
     getProgress(): number {
         if (this.data.targetValue === 0) return 0;
         return Math.min((this.data.currentValue / this.data.targetValue) * 100, 100);
     }
 
-    /**
-     * Actualiza el valor actual del objetivo
-     */
     updateProgress(newValue: number): void {
         const oldValue = this.data.currentValue;
         this.data.currentValue = newValue;
@@ -84,9 +71,6 @@ export class Goal extends Observable {
         }
     }
 
-    /**
-     * Marca el objetivo como alcanzado
-     */
     markAsAchieved(): void {
         if (this.data.status === GoalStatus.ACHIEVED) return;
 
@@ -108,9 +92,6 @@ export class Goal extends Observable {
         });
     }
 
-    /**
-     * Marca el objetivo como fallido
-     */
     markAsFailed(): void {
         if (this.data.status === GoalStatus.FAILED) return;
 
@@ -132,23 +113,14 @@ export class Goal extends Observable {
         });
     }
 
-    /**
-     * Obtiene los datos del objetivo
-     */
     getData(): GoalData {
         return { ...this.data };
     }
 
-    /**
-     * Verifica si el objetivo está vencido
-     */
     isExpired(): boolean {
         return new Date() > this.data.deadline && this.data.status === GoalStatus.IN_PROGRESS;
     }
 
-    /**
-     * Obtiene días restantes hasta la fecha límite
-     */
     getDaysRemaining(): number {
         const now = new Date();
         const deadline = new Date(this.data.deadline);

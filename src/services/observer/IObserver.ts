@@ -1,32 +1,10 @@
-/**
- * Patrón Observer para Sistema de Notificaciones y Alertas
- * 
- * Define los contratos para observadores que reaccionan a eventos
- * en objetivos (Goals) y logros (Achievements)
- */
-
 export interface IObserver {
-    /**
-     * Método llamado cuando un evento es notificado
-     * @param event Evento que ocurrió
-     */
     update(event: ObservableEvent): void;
 }
 
 export interface IObservable {
-    /**
-     * Registra un observador
-     */
     attach(observer: IObserver): void;
-
-    /**
-     * Desregistra un observador
-     */
     detach(observer: IObserver): void;
-
-    /**
-     * Notifica a todos los observadores registrados
-     */
     notifyObservers(event: ObservableEvent): void;
 }
 

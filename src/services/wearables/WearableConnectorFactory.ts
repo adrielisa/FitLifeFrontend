@@ -1,10 +1,3 @@
-/**
- * WearableConnectorFactory
- * 
- * Factory que crea e inyecta adaptadores de wearables
- * Centraliza la creación de adaptadores según el tipo de dispositivo
- */
-
 import type { IWearableConnector } from './adapters/IWearableConnector';
 import { GarminAdapter } from './adapters/GarminAdapter';
 import { AppleWatchAdapter } from './adapters/AppleWatchAdapter';
@@ -24,22 +17,12 @@ export interface WearableConfig {
     authToken?: string;
 }
 
-/**
- * Factory para crear adaptadores de wearables
- * Sigue el patrón Factory Method de GoF
- */
 export class WearableConnectorFactory {
     private static connectors: Map<string, IWearableConnector> = new Map();
 
-    /**
-     * Crea o reutiliza un conector para un dispositivo wearable
-     * @param config Configuración del dispositivo
-     * @returns Instancia del adaptador apropiado
-     */
     static createConnector(config: WearableConfig): IWearableConnector {
         const key = `${config.type}-${config.userId}`;
 
-        // Reutilizar si ya existe
         if (this.connectors.has(key)) {
             return this.connectors.get(key)!;
         }
@@ -77,17 +60,11 @@ export class WearableConnectorFactory {
         return connector;
     }
 
-    /**
-     * Obtiene un conector previamente creado
-     */
     static getConnector(type: WearableDeviceType, userId: string): IWearableConnector | undefined {
         const key = `${type}-${userId}`;
         return this.connectors.get(key);
     }
 
-    /**
-     * Elimina un conector y desconecta el dispositivo
-     */
     static async removeConnector(type: WearableDeviceType, userId: string): Promise<void> {
         const key = `${type}-${userId}`;
         const connector = this.connectors.get(key);
@@ -98,9 +75,6 @@ export class WearableConnectorFactory {
         }
     }
 
-    /**
-     * Lista todos los dispositivos conectados
-     */
     static listConnectedDevices(): Array<{ type: WearableDeviceType; userId: string }> {
         const devices: Array<{ type: WearableDeviceType; userId: string }> = [];
 
@@ -115,9 +89,6 @@ export class WearableConnectorFactory {
         return devices;
     }
 
-    /**
-     * Desconecta todos los dispositivos
-     */
     static async disconnectAll(): Promise<void> {
         const promises = Array.from(this.connectors.values()).map(connector =>
             connector.disconnect()
