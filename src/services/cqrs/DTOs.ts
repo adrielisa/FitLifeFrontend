@@ -1,16 +1,3 @@
-/**
- * DTOs (Data Transfer Objects) para la capa CQRS
- * 
- * Los DTOs optimizan la transferencia de datos:
- * - Incluyen solo los campos necesarios
- * - Mejoran seguridad (no exponen toda la entidad)
- * - Facilitan transformaciones de datos
- * - Permiten versioning de APIs
- */
-
-/**
- * DTOs para Usuarios
- */
 export interface UserProfileDTO {
     id: string;
     email: string;
@@ -32,9 +19,6 @@ export interface UserHealthMetricsDTO {
     fitnessGoal: 'weightLoss' | 'maintenance' | 'muscleGain';
 }
 
-/**
- * DTOs para Entrenamientos
- */
 export interface WorkoutSessionDTO {
     id: string;
     userId: string;
@@ -71,9 +55,6 @@ export interface WorkoutProgressDTO {
     lastWorkout: Date | null;
 }
 
-/**
- * DTOs para Nutrición
- */
 export interface MealLogDTO {
     id: string;
     userId: string;
@@ -118,9 +99,6 @@ export interface NutritionProgressDTO {
     lastMeal: MealLogDTO | null;
 }
 
-/**
- * DTOs para Objetivos
- */
 export interface GoalDTO {
     id: string;
     userId: string;
@@ -144,9 +122,7 @@ export interface GoalProgressDTO {
     milestone: boolean;
 }
 
-/**
- * DTOs para Logros
- */
+
 export interface AchievementDTO {
     id: string;
     userId: string;
@@ -171,9 +147,6 @@ export interface AchievementsProgressDTO {
     };
 }
 
-/**
- * DTOs para Dashboard
- */
 export interface DashboardSummaryDTO {
     user: UserProfileDTO;
     healthMetrics: UserHealthMetricsDTO;
@@ -194,9 +167,6 @@ export interface WeekProgressDTO {
     streak: number;
 }
 
-/**
- * DTOs para Notificaciones
- */
 export interface NotificationDTO {
     id: string;
     userId: string;
@@ -211,9 +181,6 @@ export interface NotificationDTO {
     };
 }
 
-/**
- * DTOs para Estadísticas
- */
 export interface StatsDTO {
     userId: string;
     totalWorkouts: number;
@@ -226,9 +193,6 @@ export interface StatsDTO {
     averageWorkoutDuration: number;
 }
 
-/**
- * DTOs para Recomendaciones
- */
 export interface RecommendationDTO {
     id: string;
     userId: string;
