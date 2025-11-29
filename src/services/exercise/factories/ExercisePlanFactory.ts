@@ -1,19 +1,3 @@
-/**
- * Factory Method Pattern para Planes de Ejercicio
- * 
- * Patrón GoF: Factory Method
- * Define la interfaz para crear objetos Plan, pero deja que las subclases
- * decidan qué clase concreta instanciar.
- * 
- * Beneficios:
- * - La lógica de creación NO está en el cliente
- * - Fácil agregar nuevos tipos de planes
- * - Centralización de la creación
- */
-
-/**
- * Interface que todos los planes de ejercicio deben implementar
- */
 export interface IExercisePlan {
     name: string;
     description: string;
@@ -50,9 +34,6 @@ export interface WeeklySchedule {
     sundayExercises: Exercise[];
 }
 
-/**
- * Plan para Maratón - Resistencia y cardio
- */
 export class MarathonPlan implements IExercisePlan {
     name = 'Plan de Maratón';
     description = 'Programa de 16 semanas para preparar un maratón con énfasis en resistencia, velocidad y prevención de lesiones.';
@@ -118,9 +99,6 @@ export class MarathonPlan implements IExercisePlan {
     };
 }
 
-/**
- * Plan para Ganancia Muscular - Hipertrofia
- */
 export class MuscleGainPlan implements IExercisePlan {
     name = 'Plan de Ganancia Muscular';
     description = 'Programa de 12 semanas enfocado en hipertrofia muscular con ejercicios de fuerza y volumen.';
@@ -205,9 +183,6 @@ export class MuscleGainPlan implements IExercisePlan {
     };
 }
 
-/**
- * Plan de Pérdida de Peso - Cardio + Fuerza
- */
 export class WeightLossPlan implements IExercisePlan {
     name = 'Plan de Pérdida de Peso';
     description = 'Programa de 8 semanas que combina cardio y entrenamiento de fuerza para máxima quema de calorías.';
@@ -275,43 +250,28 @@ export class WeightLossPlan implements IExercisePlan {
     };
 }
 
-/**
- * Interfaz Creator - Define el contrato para las fábricas
- */
 export interface IPlanFactory {
     createPlan(): IExercisePlan;
 }
 
-/**
- * Concreto Creator para Maratón
- */
 export class MarathonPlanFactory implements IPlanFactory {
     createPlan(): IExercisePlan {
         return new MarathonPlan();
     }
 }
 
-/**
- * Concreto Creator para Ganancia Muscular
- */
 export class MuscleGainPlanFactory implements IPlanFactory {
     createPlan(): IExercisePlan {
         return new MuscleGainPlan();
     }
 }
 
-/**
- * Concreto Creator para Pérdida de Peso
- */
 export class WeightLossPlanFactory implements IPlanFactory {
     createPlan(): IExercisePlan {
         return new WeightLossPlan();
     }
 }
 
-/**
- * ExercisePlanManager - Gestiona todas las fábricas y simplifica la creación
- */
 export enum PlanType {
     MARATHON = 'marathon',
     MUSCLE_GAIN = 'muscle_gain',
@@ -326,25 +286,16 @@ export class ExercisePlanManager {
         this.registerDefaultFactories();
     }
 
-    /**
-     * Registra las factories por defecto
-     */
     private registerDefaultFactories(): void {
         this.factories.set(PlanType.MARATHON, new MarathonPlanFactory());
         this.factories.set(PlanType.MUSCLE_GAIN, new MuscleGainPlanFactory());
         this.factories.set(PlanType.WEIGHT_LOSS, new WeightLossPlanFactory());
     }
 
-    /**
-     * Registra una factory personalizada
-     */
     registerFactory(type: string, factory: IPlanFactory): void {
         this.factories.set(type as PlanType, factory);
     }
 
-    /**
-     * Crea un plan usando la factory correspondiente
-     */
     createPlan(type: PlanType): IExercisePlan {
         const factory = this.factories.get(type);
 
@@ -355,9 +306,6 @@ export class ExercisePlanManager {
         return factory.createPlan();
     }
 
-    /**
-     * Lista todos los tipos de planes disponibles
-     */
     listAvailablePlans(): Array<{ type: PlanType; name: string; description: string }> {
         const plans: Array<{ type: PlanType; name: string; description: string }> = [];
 
