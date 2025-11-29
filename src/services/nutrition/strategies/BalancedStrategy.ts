@@ -1,12 +1,3 @@
-/**
- * Estrategia de Nutrición: Dieta Balanceada
- * 
- * Enfoque: Nutrición equilibrada con proporción moderada de macro y micronutrientes
- * Objetivo: Nutrición óptima para salud general y sostenibilidad a largo plazo
- * 
- * Macros típicas: 50% carbs, 25% proteínas, 25% grasas
- */
-
 import type {
     INutritionStrategy,
     NutrientRecommendation,
