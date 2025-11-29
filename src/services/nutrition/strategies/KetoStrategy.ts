@@ -1,12 +1,3 @@
-/**
- * Estrategia de Nutrición: Dieta Cetogénica (Keto)
- * 
- * Enfoque: Alto en grasas, muy bajo en carbohidratos
- * Objetivo: Inducir cetosis para quemar grasa como fuel principal
- * 
- * Macros típicas: 70-75% grasas, 20-25% proteínas, 5-10% carbohidratos
- */
-
 import type {
     INutritionStrategy,
     NutrientRecommendation,
