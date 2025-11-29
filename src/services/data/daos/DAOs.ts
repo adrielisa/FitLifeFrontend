@@ -1,17 +1,3 @@
-/**
- * Data Access Objects (DAOs)
- * 
- * Capa de abstracción para acceso a datos
- * - Encapsula la lógica de persistencia
- * - Permite cambiar de base de datos sin afectar la lógica de negocio
- * - Define contratos para acceso a datos
- * - Facilita testing con implementaciones mock
- */
-
-/**
- * ==================== INTERFACES (CONTRATOS) ====================
- */
-
 export interface IUserDAO {
     getUserById(userId: string): Promise<any>;
     createUser(userData: any): Promise<string>;
@@ -71,11 +57,6 @@ export interface INotificationDAO {
     markAsRead(notificationId: string): Promise<void>;
     deleteNotification(notificationId: string): Promise<void>;
 }
-
-/**
- * ==================== IMPLEMENTACIONES MOCK ====================
- * Utilizadas para desarrollo y testing
- */
 
 export class UserDAOMock implements IUserDAO {
     private users: Map<string, any> = new Map();
