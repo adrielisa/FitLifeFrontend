@@ -1,16 +1,45 @@
 import { useState } from "react"
-import { useNavigate } from "react-router-dom"
+import { useNavigate, Link } from "react-router-dom"
+import { userService, type LoginUserDTO } from "../../services/api/userService"
 
 const Login: React.FC = () => {
     const navigate = useNavigate()
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
+    const [email, setEmail] = useState("")
+    const [password, setPassword] = useState("")
+    const [isLoading, setIsLoading] = useState(false)
 
-    const handleSubmit = (e: React.FormEvent) => {
-        e.preventDefault();
+    const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault()
         
-        navigate('/home');
-    };
+        if (!email || !password) {
+            alert("Por favor completa todos los campos")
+            return
+        }
+
+        setIsLoading(true)
+
+        try {
+            // Preparar datos de login
+            const credentials: LoginUserDTO = {
+                email,
+                password
+            }
+
+            // Llamar al servicio de login
+            const response = await userService.login(credentials)
+            
+            alert(`¡Bienvenido de nuevo, ${response.user.name}!`)
+            
+            // Redirigir a home
+            navigate('/home')
+        } catch (error: any) {
+            console.error('Error en login:', error)
+            const errorMessage = error.response?.data?.message || error.response?.data?.error || 'Error al iniciar sesión. Verifica tus credenciales.'
+            alert(errorMessage)
+        } finally {
+            setIsLoading(false)
+        }
+    }
 
     return (
         <div
@@ -26,7 +55,7 @@ const Login: React.FC = () => {
                 <h2 className="text-xl sm:text-2xl font-bold text-white text-center mb-6">
                     Iniciar Sesión
                 </h2>
-                <div>
+                <form onSubmit={handleSubmit}>
                     <div className="mb-4">
                         <label className="block text-white text-sm mb-1">Correo</label>
                         <input
@@ -34,7 +63,8 @@ const Login: React.FC = () => {
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
                             required
-                            className="w-full p-3 rounded-md border border-orange-500 bg-transparent text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-orange-500 text-base"
+                            disabled={isLoading}
+                            className="w-full p-3 rounded-md border border-orange-500 bg-transparent text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-orange-500 text-base disabled:opacity-50"
                             placeholder="ejemplo@correo.com"
                         />
                     </div>
@@ -45,30 +75,28 @@ const Login: React.FC = () => {
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
                             required
-                            className="w-full p-3 rounded-md border border-orange-500 bg-transparent text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-orange-500 text-base"
+                            disabled={isLoading}
+                            className="w-full p-3 rounded-md border border-orange-500 bg-transparent text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-orange-500 text-base disabled:opacity-50"
                             placeholder="********"
                         />
                     </div>
                     <button
-                        type="button"
-                        onClick={(e) => {
-                            e.preventDefault();
-                            handleSubmit(e as any);
-                        }}
-                        className="w-full bg-orange-600 hover:bg-orange-700 text-white font-bold py-3 rounded-md transition-colors touch-manipulation"
+                        type="submit"
+                        disabled={isLoading}
+                        className="w-full bg-orange-600 hover:bg-orange-700 disabled:bg-gray-500 disabled:cursor-not-allowed text-white font-bold py-3 rounded-md transition-colors touch-manipulation"
                     >
-                        Ingresar
+                        {isLoading ? 'Ingresando...' : 'Ingresar'}
                     </button>
-                </div>
+                </form>
                 <p className="mt-4 text-center text-white text-sm">
                     ¿No tienes cuenta?{" "}
-                    <a href="/Register" className="text-orange-500 hover:underline">
+                    <Link to="/register" className="text-orange-500 hover:underline">
                         Crea una
-                    </a>
+                    </Link>
                 </p>
             </div>
         </div>
     )
-};
+}
 
-export default Login;
+export default Login

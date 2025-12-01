@@ -71,7 +71,7 @@ const Meals: React.FC = () => {
         <div className="min-h-screen bg-[#1A1A1A] text-white">
             <Header
                 isActive={true}
-                showBackButton={true}
+                showBackButton={false}
                 onBack={handleBack}
                 showProfileButton={true}
                 onProfile={handleProfile}
@@ -195,11 +195,7 @@ const Meals: React.FC = () => {
                 )}
             </AnimatePresence>
 
-            <BottomNavigation
-                onNavigateExercises={onNavigateExercises}
-                onNavigateHome={onNavigateHome}
-                onNavigateNutrition={onNavigateNutrition}
-            />
+            <BottomNavigation/>
         </div>
     );
 };

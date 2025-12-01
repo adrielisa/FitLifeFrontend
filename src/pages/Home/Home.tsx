@@ -13,16 +13,16 @@ const Home: React.FC = () => {
 
 
     const [weekData] = useState([
-            { day: 'L', completed: true },
-            { day: 'M', completed: true },
-            { day: 'M', completed: false, isToday: true },
-            { day: 'J', completed: false },
-            { day: 'V', completed: false },
-            { day: 'S', completed: true },
-            { day: 'D', completed: false }
-        ]);
+        { day: 'L', completed: true },
+        { day: 'M', completed: true },
+        { day: 'M', completed: false, isToday: true },
+        { day: 'J', completed: false },
+        { day: 'V', completed: false },
+        { day: 'S', completed: true },
+        { day: 'D', completed: false }
+    ]);
 
-        const navigate = useNavigate();
+    const navigate = useNavigate();
 
     function onNavigateExercises(): void {
         throw new Error("Function not implemented.");
@@ -48,7 +48,7 @@ const Home: React.FC = () => {
         <div className="min-h-screen bg-[#1A1A1A] text-white p-10 space-y-10">
             <Header
                 isActive={true}
-                showBackButton={true}
+                showBackButton={false}
                 onBack={handleBack}
                 showProfileButton={true}
                 onProfile={handleProfile}
@@ -85,30 +85,26 @@ const Home: React.FC = () => {
             <div>
                 <h1 className="text-lg font-bold mb-6">Comidas de hoy</h1>
 
-    <div className="bg-[#2A2A2A] p-6 rounded-xl mb-24">
-        <div className="flex items-center justify-between mb-6">
-            <div className="flex items-center gap-2">
-                <Flame className="text-white" />
-                <span>Calorías</span>
-            </div>
-            <span className="text-sm text-gray-300">{consumed}/{total}</span>
-        </div>
+                <div className="bg-[#2A2A2A] p-6 rounded-xl mb-24">
+                    <div className="flex items-center justify-between mb-6">
+                        <div className="flex items-center gap-2">
+                            <Flame className="text-white" />
+                            <span>Calorías</span>
+                        </div>
+                        <span className="text-sm text-gray-300">{consumed}/{total}</span>
+                    </div>
 
-        <div className="w-full bg-white rounded-full h-6 overflow-hidden">
-            <motion.div
-                className="bg-green-600 h-6 rounded-full"
-                initial={{ width: 0 }}
-                animate={{ width: `${progress}%` }}
-                transition={{ duration: 0.5, ease: "easeOut" }}
-            />
-        </div>
-    </div>
-</div>
-            <BottomNavigation
-                onNavigateExercises={onNavigateExercises}
-                onNavigateHome={onNavigateHome}
-                onNavigateNutrition={onNavigateNutrition}
-            />
+                    <div className="w-full bg-white rounded-full h-6 overflow-hidden">
+                        <motion.div
+                            className="bg-green-600 h-6 rounded-full"
+                            initial={{ width: 0 }}
+                            animate={{ width: `${progress}%` }}
+                            transition={{ duration: 0.5, ease: "easeOut" }}
+                        />
+                    </div>
+                </div>
+            </div>
+            <BottomNavigation />
         </div>
     );
 };

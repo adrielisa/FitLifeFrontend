@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Header from "../../components/common/Header/Header";
 import WorkoutControls from "../../components/exercises/WorkoutControls/WorkoutControls";
 import ActivityTracker from "../../components/exercises/ActivityTracker/ActivityTracker";
@@ -6,63 +6,189 @@ import WeeklyProgress from "../../components/exercises/WeeklyProgress/WeeklyProg
 import ProgressBar from "../../components/common/ProgressBar/ProgressBar";
 import BottomNavigation from "../../components/common/Navigation/BottomNavigation";
 import { useNavigate } from "react-router-dom";
+import { useWorkoutSession } from "../../context/WorkoutSessionContext";
+import exercisePlanService from "../../services/api/exercisePlanService";
+import { getUserId } from "../../utils/userUtils";
 
 export default function ExercisesMain() {
     const navigate = useNavigate();
+    const { weeklyStats, refreshWeeklyStats, refreshActiveSession } = useWorkoutSession();
+    const [activePlan, setActivePlan] = useState<any>(null);
+    const [isLoading, setIsLoading] = useState(true);
+
+    // Obtener userId del localStorage
+    const userId = getUserId() || '';
+
+    // Helper function to get current week key
+    const getCurrentWeekKey = () => {
+        const now = new Date();
+        const startOfWeek = new Date(now.setDate(now.getDate() - now.getDay() + 1)); // Monday
+        return `week-${startOfWeek.toISOString().split('T')[0]}`;
+    };
+
+    // Get fixed total sessions from localStorage or initialize it
+    const getFixedTotalSessions = (): number => {
+        const weekKey = getCurrentWeekKey();
+        const stored = localStorage.getItem(`totalSessions-${weekKey}`);
+        if (stored) {
+            return parseInt(stored, 10);
+        }
+        // If not stored and we have weeklyStats, use its initial value
+        if (weeklyStats?.totalSessions) {
+            const total = weeklyStats.totalSessions;
+            localStorage.setItem(`totalSessions-${weekKey}`, total.toString());
+            return total;
+        }
+        return 0;
+    };
+
+    useEffect(() => {
+        if (!userId) {
+            navigate('/login');
+            return;
+        }
+        loadData();
+    }, [userId]);
+
+    // Effect to store initial totalSessions when weeklyStats first loads
+    useEffect(() => {
+        if (weeklyStats?.totalSessions) {
+            const weekKey = getCurrentWeekKey();
+            const storedTotal = localStorage.getItem(`totalSessions-${weekKey}`);
+            
+            // Only store if not already stored for this week
+            if (!storedTotal) {
+                localStorage.setItem(`totalSessions-${weekKey}`, weeklyStats.totalSessions.toString());
+            }
+        }
+    }, [weeklyStats]);
+
+    const loadData = async () => {
+        try {
+            setIsLoading(true);
+            
+            // 1. Verificar si el usuario tiene un plan activo
+            const plan = await exercisePlanService.getActivePlan(userId);
+            setActivePlan(plan);
+            
+            // 2. Cargar estadísticas semanales
+            await refreshWeeklyStats(userId);
+            
+            // 3. Verificar si hay sesión activa
+            await refreshActiveSession(userId);
+        } catch (error) {
+            console.error('Error loading data:', error);
+        } finally {
+            setIsLoading(false);
+        }
+    };
 
     const handleBack = () => {
-        navigate('/workoutPlan');
+        navigate('/home');
     };
 
     const handleProfile = () => {
         navigate('/profile');
     };
 
-    const [activityData] = useState({
+    // Preparar datos de actividad desde las estadísticas
+    const activityData = {
         exercise: {
-            minutes: 10,
+            minutes: weeklyStats?.totalMinutes || 0,
             completed: false
         },
         calories: {
-            burned: 580,
+            burned: weeklyStats?.totalCalories || 0,
             completed: false
         }
-    });
+    };
 
-    const [weekData] = useState([
-        { day: 'L', completed: true },
-        { day: 'M', completed: true },
-        { day: 'M', completed: false, isToday: true },
-        { day: 'J', completed: false },
-        { day: 'V', completed: false },
-        { day: 'S', completed: true },
-        { day: 'D', completed: false }
-    ]);
+    // Preparar datos de progreso semanal
+    const getWeekData = () => {
+        const days = ['L', 'M', 'M', 'J', 'V', 'S', 'D'];
+        const today = new Date().getDay(); // 0 = Domingo, 1 = Lunes, etc.
+        const adjustedToday = today === 0 ? 6 : today - 1; // Ajustar para que Lunes = 0
 
-    const [progressData] = useState({
-        percentage: 17,
-        sessions: { completed: 3, total: 10 },
-        consecutiveWeeks: 2
-    });
+        return days.map((day, index) => {
+            const sessionsCount = weeklyStats?.sessionsPerDay 
+                ? Object.entries(weeklyStats.sessionsPerDay).filter(([date]) => {
+                    const dayOfWeek = new Date(date).getDay();
+                    const adjustedDay = dayOfWeek === 0 ? 6 : dayOfWeek - 1;
+                    return adjustedDay === index;
+                }).length
+                : 0;
+
+            return {
+                day,
+                completed: sessionsCount > 0,
+                isToday: index === adjustedToday
+            };
+        });
+    };
+
+    const weekData = getWeekData();
+
+    // Calcular progreso del entrenamiento
+    // Usar el total de sesiones fijo almacenado para la semana actual
+    const fixedTotalSessions = getFixedTotalSessions();
+    const completedSessions = weeklyStats?.completedSessions || 0;
+    
+    const progressData = {
+        percentage: fixedTotalSessions > 0
+            ? Math.round((completedSessions / fixedTotalSessions) * 100)
+            : 0,
+        sessions: { 
+            completed: completedSessions, 
+            total: fixedTotalSessions 
+        },
+        consecutiveWeeks: 2 // Esto lo puedes calcular más adelante
+    };
 
     const handleStartWorkout = () => {
-        navigate('/workoutPlan');
+        // Si no tiene plan activo, ir a selección de plan
+        if (!activePlan) {
+            navigate('/exercisesPlan');
+        } else {
+            // Si tiene plan activo, ir al plan de entrenamiento
+            navigate('/workoutPlan');
+        }
     };
 
     const handleChangePlan = () => {
-        alert("Cambiando plan de entrenamiento...");
+        navigate('/exercisesPlan');
     };
+
+    if (isLoading) {
+        return (
+            <div className="min-h-screen bg-[#2d2d2d] flex items-center justify-center">
+                <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-orange-500"></div>
+            </div>
+        );
+    }
 
     return (
         <div className="min-h-screen bg-[#1A1A1A] text-white p-10 space-y-10">
             <Header
                 isActive={true}
-                showBackButton={true}
+                showBackButton={false}
                 onBack={handleBack}
                 showProfileButton={true}
                 onProfile={handleProfile}
                 userAvatar="https://avatarfiles.alphacoders.com/326/thumb-1920-326022.jpg"
             />
+
+            {/* Mostrar información del plan activo si existe */}
+            {activePlan && (
+                <div className="px-4 mb-4">
+                    <div className="bg-[#3d3d3d] rounded-xl p-4">
+                        <h3 className="text-white font-bold mb-1">{activePlan.plan_name}</h3>
+                        {activePlan.description && (
+                            <p className="text-gray-400 text-sm">{activePlan.description}</p>
+                        )}
+                    </div>
+                </div>
+            )}
+
             <WorkoutControls
                 onStartWorkout={handleStartWorkout}
                 onChangePlan={handleChangePlan}

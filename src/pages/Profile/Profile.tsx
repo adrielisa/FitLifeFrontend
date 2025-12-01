@@ -1,8 +1,10 @@
-import type React from "react";
+import React, { useState, useEffect } from "react";
 import BackButton from "../../components/common/Button/BackButton";
 import BottomNavigation from "../../components/common/Navigation/BottomNavigation";
 import { useNavigate } from "react-router-dom";
-// Interfaz para los datos del perfil
+import { userService, type User } from "../../services/api/userService";
+
+// Interfaz para los datos del perfil formateados
 interface DatosPerfil {
   nombre: string;
   correo: string;
@@ -14,41 +16,83 @@ interface DatosPerfil {
   urlAvatar?: string;
 }
 
-// Props del componente
-interface ProfileProps {
-  profileData?: DatosPerfil;
-  onBack?: () => void;
-  onNavigateHome?: () => void;
-  onNavigateExercises?: () => void;
-  onNavigateNutrition?: () => void;
-}
-
-// Datos mock para ejemplo (reemplazar con datos reales del backend)
-const datosMock: DatosPerfil = {
-  nombre: "Adriel Isai",
-  correo: "adrielelmaspro@gmail",
-  edad: 42,
-  peso: "34 kg",
-  estatura: "170 cm",
-  nivelActividad: "Alto",
-  meta: "Ganar masa muscular",
-};
-
-const Profile: React.FC<ProfileProps> = ({
-  profileData = datosMock,
-  onBack,
-  onNavigateHome,
-  onNavigateExercises,
-  onNavigateNutrition,
-}) => {
+const Profile: React.FC = () => {
   const navigate = useNavigate();
+  const [profileData, setProfileData] = useState<DatosPerfil | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+
+  // Función para formatear los datos del usuario
+  const formatUserData = (user: User): DatosPerfil => {
+    // Mapear fitness_goal a texto legible
+    const goalMap: Record<string, string> = {
+      'perder_peso': 'Perder peso',
+      'mantener_peso': 'Mantener peso',
+      'ganar_peso': 'Ganar peso',
+      'ganar_musculo': 'Ganar masa muscular',
+    };
+
+    // Mapear activity_level a texto legible
+    const activityMap: Record<string, string> = {
+      'bajo': 'Bajo',
+      'moderado': 'Medio',
+      'alto': 'Alto',
+    };
+
+    return {
+      nombre: user.name,
+      correo: user.email,
+      edad: user.age,
+      peso: `${user.weight} kg`,
+      estatura: `${user.height} cm`,
+      nivelActividad: activityMap[user.activity_level] || user.activity_level,
+      meta: goalMap[user.fitness_goal] || user.fitness_goal,
+    };
+  };
+
+  useEffect(() => {
+    const loadUserProfile = () => {
+      console.log('🔍 Iniciando carga de perfil...');
+      
+      // Verificar si hay token antes de continuar
+      const isAuth = userService.isAuthenticated();
+      console.log('🔐 Usuario autenticado:', isAuth);
+      
+      if (!isAuth) {
+        console.log('❌ Usuario no autenticado, redirigiendo a login');
+        navigate('/login');
+        return;
+      }
+
+      // Obtener usuario del localStorage
+      const localUser = userService.getCurrentUser();
+      console.log('👤 Usuario local:', localUser);
+      
+      if (localUser) {
+        try {
+          const formattedData = formatUserData(localUser);
+          console.log('✅ Datos formateados:', formattedData);
+          setProfileData(formattedData);
+          setIsLoading(false);
+        } catch (error) {
+          console.error('❌ Error al formatear datos:', error);
+          setIsLoading(false);
+          alert('Error al cargar el perfil');
+          navigate('/login');
+        }
+      } else {
+        console.log('❌ No hay usuario en localStorage');
+        setIsLoading(false);
+        alert('No se encontró información del usuario. Por favor, inicia sesión nuevamente.');
+        navigate('/login');
+      }
+    };
+
+    loadUserProfile();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []); // Solo ejecutar una vez al montar el componente
 
   const handleBack = () => {
-    if (onBack) {
-      onBack();
-    } else {
-      navigate(-1); // Navega a la página anterior
-    }
+    navigate(-1); // Navega a la página anterior
   };
 
   // Función para obtener las iniciales del nombre
@@ -60,6 +104,18 @@ const Profile: React.FC<ProfileProps> = ({
       .toUpperCase()
       .slice(0, 2);
   };
+
+  // Mostrar loader mientras carga
+  if (isLoading || !profileData) {
+    return (
+      <div className="min-h-screen bg-[#1A1A1A] text-white flex items-center justify-center">
+        <div className="text-center">
+          <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-current border-r-transparent align-[-0.125em] motion-reduce:animate-[spin_1.5s_linear_infinite]" />
+          <p className="mt-4 text-gray-400">Cargando perfil...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-[#1A1A1A] text-white">
@@ -133,12 +189,9 @@ const Profile: React.FC<ProfileProps> = ({
       </div>
 
       {/* Navegación inferior */}
-      <BottomNavigation
-        onNavigateExercises={onNavigateExercises}
-        onNavigateHome={onNavigateHome}
-        onNavigateNutrition={onNavigateNutrition}
-      />
+      <BottomNavigation />
     </div>
   );
 };
+
 export default Profile;

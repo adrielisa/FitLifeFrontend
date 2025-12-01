@@ -3,6 +3,8 @@ import hombre from "../../assets/images/hombrecorriendo.png";
 import mujer from "../../assets/images/mujercorriendo.png";
 import { Link } from "react-router-dom";
 
+
+
 const LandingPage: React.FC = () => {
     return (
         <div
